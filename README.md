@@ -22,15 +22,14 @@ List any prerequisites or dependencies for your project, such as:
 Programming languages
 External libraries
 Hardware requirements
+
 # Installation and Usage
-Provide step-by-step instructions on how to install and run your implementation. For example:
 
 bash
 ```
-git clone [repository_url]
-cd [project_directory]
+git clone https://github.com/zaccheus-lines/ShortestVectorProblem
+cd ShortestVectorProblem
 pip install -r requirements.txt
-python svp_solver.py
 ```
 
 # Configuration
@@ -39,11 +38,5 @@ Explain how to configure the project, if applicable. For example, setting the di
 # Testing
 Detail how to run any tests included with your project. Mention any test datasets or benchmarks used.
 
-# Contribution
-Instructions for how others can contribute to your project. Include coding standards, branch naming conventions, and any other relevant information.
-
-# License
-State the license under which your project is released.
-
 # Contact
-Provide contact information for users to reach out with questions, suggestions, or collaboration proposals.
+zaccheus.lines@hotmail.com
