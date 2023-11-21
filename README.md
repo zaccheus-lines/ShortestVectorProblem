@@ -19,7 +19,7 @@ Any libraries or tools utilized
 # Requirements
 List any prerequisites or dependencies for your project, such as:
 
-Programming languages
+C
 External libraries
 Hardware requirements
 
