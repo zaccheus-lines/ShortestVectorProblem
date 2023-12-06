@@ -1,87 +1,149 @@
-// vector.h
+#include <iostream>
 #include <vector>
-#include <stdexcept>
 #include <cmath>
+#include <initializer_list>
 
 class Vector {
-private:
-    std::vector<double> elements;
-
 public:
-    // Constructor
-    Vector(int size) : elements(size) {}
+    // Default constructor
+    Vector() {}
 
-    // Accessor with bounds checking
-    double& operator[](int i) {
-        if (i < 0 || i >= size()) {
-            throw std::out_of_range("Index out of range");
-        }
-        return elements[i];
-    }
+    // Constructor with initializer list
+    Vector(std::initializer_list<double> list) : data(list) {}
 
-    // Const accessor
-    double operator[](int i) const {
-        if (i < 0 || i >= size()) {
-            throw std::out_of_range("Index out of range");
-        }
-        return elements[i];
-    }
+    // Copy constructor
+    Vector(const Vector& other) : data(other.data) {}
 
-    // Get the size of the vector
-    int size() const { return elements.size(); }
+    // Move constructor
+    Vector(Vector&& other) noexcept : data(std::move(other.data)) {}
 
-    // Add another vector to this vector
-    Vector& operator+=(const Vector& rhs) {
-        if (size() != rhs.size()) {
-            throw std::invalid_argument("Vectors must be of the same size");
-        }
-        for (int i = 0; i < size(); ++i) {
-            elements[i] += rhs[i];
+    // Destructor
+    ~Vector() {}
+
+    // Copy assignment operator
+    Vector& operator=(const Vector& other) {
+        if (this != &other) {
+            data = other.data;
         }
         return *this;
     }
 
-    // Subtract another vector from this vector
-    Vector& operator-=(const Vector& rhs) {
-        if (size() != rhs.size()) {
-            throw std::invalid_argument("Vectors must be of the same size");
-        }
-        for (int i = 0; i < size(); ++i) {
-            elements[i] -= rhs[i];
+    // Move assignment operator
+    Vector& operator=(Vector&& other) noexcept {
+        if (this != &other) {
+            data = std::move(other.data);
         }
         return *this;
     }
 
-    // Calculate the dot product of this vector and another vector
-    double dot(const Vector& rhs) const {
-        if (size() != rhs.size()) {
-            throw std::invalid_argument("Vectors must be of the same size");
+    // Method to print the vector
+    void print() const {
+        for (const double& element : data) {
+            std::cout << element << " ";
         }
-        double product = 0;
-        for (int i = 0; i < size(); ++i) {
-            product += elements[i] * rhs[i];
+        std::cout << std::endl; 
+}
+
+    // Overload the [] operator for non-const access
+    double& operator[](size_t index) {
+        if (index >= data.size()) {
+            throw std::out_of_range("Index out of range");
         }
-        return product;
+        return data[index];
     }
 
-    // Calculate the Euclidean norm of the vector
+    // Overload the [] operator for const access
+    const double& operator[](size_t index) const {
+        if (index >= data.size()) {
+            throw std::out_of_range("Index out of range");
+        }
+        return data[index];
+    }
+
+    // Euclidean norm (magnitude)
     double norm() const {
-        double sum = 0;
-        for (double elem : elements) {
-            sum += elem * elem;
+        double sum = 0.0;
+        for (auto& val : data) {
+            sum += val * val;
         }
-        return std::sqrt(sum);
+        return sqrt(sum);
     }
 
-    // Normalize this vector
-    Vector& normalize() {
-        double n = norm();
-        if (n == 0) {
-            throw std::runtime_error("Cannot normalize a zero vector");
+    // Addition
+    Vector operator+(const Vector& other) const {
+        checkDimension(other);
+        Vector result = *this;
+        for (size_t i = 0; i < data.size(); ++i) {
+            result.data[i] += other.data[i];
         }
-        for (double& elem : elements) {
-            elem /= n;
-        }
-        return *this;
+        return result;
     }
+
+    // Subtraction
+    Vector operator-(const Vector& other) const {
+        checkDimension(other);
+        Vector result = *this;
+        for (size_t i = 0; i < data.size(); ++i) {
+            result.data[i] -= other.data[i];
+        }
+        return result;
+    }
+
+    // Normalize the vector
+    void normalise() {
+        double magnitude = norm();
+        if (magnitude != 0.0) {
+            for (double& val : data) {
+                val /= magnitude;
+        }}
+    }
+
+    void scalar_mult(double& r) {
+        for (size_t i = 0; i < this->size(); ++i) {
+            (*this)[i] = r * (*this)[i];
+        }}
+
+    void scalar_sub(double& r, Vector& other) {
+        if (this->size() != other.size()) {
+            throw std::invalid_argument("Input vectors must have the same size");
+        }
+
+        for (size_t i = 0; i < this->size(); ++i) {
+            other[i] -= r * (*this)[i];
+        }}
+
+    // Scalar multiplication
+    Vector operator*(double scalar) const {
+        Vector result = *this;
+        for (double& val : result.data) {
+            val *= scalar;
+        }
+        return result;
+    }
+
+    // Dot product
+    double dot(const Vector& other) const {
+        checkDimension(other);
+        double sum = 0.0;
+        for (size_t i = 0; i < data.size(); ++i) {
+            sum += this->data[i] * other.data[i];
+        }
+        return sum;
+    }
+
+    size_t size() const {
+        return data.size();
+    }
+    
+    // Utility function to check dimensions
+    void checkDimension(const Vector& other) const {
+        if (data.size() != other.data.size()) {
+            throw std::invalid_argument("Vectors must be of the same dimension");
+        }
+    }
+private:
+    std::vector<double> data;
 };
+
+
+
