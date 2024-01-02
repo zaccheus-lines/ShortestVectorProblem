@@ -3,13 +3,16 @@
 #include <cmath>
 #include <initializer_list>
 
-class Vector {
+class Vector{
 public:
     // Default constructor
     Vector() {}
 
     // Constructor with initializer list
     Vector(std::initializer_list<double> list) : data(list) {}
+
+    // Constructor with size
+    Vector(size_t size) : data(size, 0.0) {}
 
     // Copy constructor
     Vector(const Vector& other) : data(other.data) {}
@@ -36,6 +39,11 @@ public:
         return *this;
     }
 
+    // Dynamic addition
+    void push_back(double value) {
+        data.push_back(value);
+    }
+
     // Method to print the vector
     void print() const {
         for (const double& element : data) {
@@ -43,7 +51,6 @@ public:
         }
         std::cout << std::endl; 
 }
-
     // Overload the [] operator for non-const access
     double& operator[](size_t index) {
         if (index >= data.size()) {
@@ -144,6 +151,3 @@ public:
 private:
     std::vector<double> data;
 };
-
-
-

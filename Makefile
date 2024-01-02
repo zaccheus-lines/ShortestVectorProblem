@@ -1,17 +1,21 @@
+# Compiler and compiler flags
+CXX = g++
+CXXFLAGS = -Wall -Werror -std=c++11
+
 # Default target
 all: runme
 
 # Rule to create the runme executable
-runme: src/svp_solver.o src/main.o
-		g++ -Wall -Werror -o runme src/svp_solver.o src/main.o
+runme: src/main.o
+		$(CXX) $(CXXFLAGS) -o runme src/main.o
 
 # Rule to compile .cpp files into .o files
 %.o: %.cpp
-		g++ -Wall -Werror -c $< -o $@
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Rule to create the test executable and run it
-test: src/svp_solver.o tests/test.o
-		g++ -Wall -Werror -o test src/svp_solver.o tests/test.o
+test: tests/test.o
+		$(CXX) $(CXXFLAGS) -o test tests/test.o
 		./test
 
 # Clean up
