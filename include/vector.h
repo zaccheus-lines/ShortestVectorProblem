@@ -142,6 +142,20 @@ public:
         return data.size();
     }
     
+    double max() const {
+        if (data.empty()) {
+            throw std::runtime_error("Vector is empty");
+        }
+
+        double maxElem = data[0];
+        for (double elem : data) {
+            if (elem > maxElem) {
+                maxElem = elem;
+            }
+        }
+        return maxElem;
+    }
+
     // Utility function to check dimensions
     void checkDimension(const Vector& other) const {
         if (data.size() != other.data.size()) {

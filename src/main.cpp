@@ -37,7 +37,7 @@ int main() {
 
     // Get the Gram-Schmidt basis vectors
     //Lattice.gramSchmidt();
-    SV = Lattice.schnorrEuchnerEnumeration(1.74939e+50);
+    SV = Lattice.schnorrEuchnerEnumeration();
     //Lattice.schnorrEuchnerEnumeration(10000);
     SV.print();
     //SV.print();

@@ -98,8 +98,9 @@ public:
         return norms;
     }
 
-    Vector schnorrEuchnerEnumeration(double R) {
+    Vector schnorrEuchnerEnumeration() {
     norms = gramSchmidt();
+    double R = norms.max();
     norms.print();
     size_t n = basis_.size();
     Vector rho(n + 1), v(n), c(n), w(n), s(n);
