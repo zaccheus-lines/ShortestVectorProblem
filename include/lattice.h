@@ -104,7 +104,7 @@ public:
     size_t n = basis_.size();
     Vector rho(n + 1), v(n), c(n), w(n), s(n);
     v[0]=1;
-    int k = 0, last_nonzero = 0;
+    size_t k = 0, last_nonzero = 0;
     double R2 = R * R;
 
     while (true) {
@@ -117,13 +117,13 @@ public:
             if (k == 0) {
                 R2 = rho[k];
                 s = Vector(n);
-                for (int i = 0; i < n; i++){
+                for (size_t i = 0; i < n; i++){
                     s = s + basis_[i]*v[i];
                     }
             } else {
                 k -= 1;
                 c[k] = 0;
-                for (int i = k; i < n; ++i){
+                for (size_t i = k; i < n; ++i){
                     c[k] = c[k] - mu_[i][k] * v[i];
                     }
                 v[k] = round(c[k]);
