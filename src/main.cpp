@@ -5,19 +5,78 @@
 #include <iterator>
 #include "../include/lattice.h"
 #include <cstdlib> 
+#include <chrono>
 
-int main() {
-    /*
+std::vector<double> parseNumbers(const std::string& str) {
+    std::vector<double> numbers;
+    std::stringstream ss(str);
+    char ch;  // used to consume the '[' and ']' characters
+    double num;
+    while (ss >> ch && ch == '[') {
+        while (ss >> num) {
+            numbers.push_back(num);
+            if (ss.peek() == ']') {
+                ss.ignore();
+                break;
+            }
+        }
+    }
+    return numbers;
+}
+size_t Vector::commonSize = 0;  // Definition
+
+int main(int argc, char* argv[]) {
+    std::vector<Vector> basis;
+    std::string currentVector;
+
+    for (int i = 1; i < argc; ++i) {
+        std::string arg = argv[i];
+        
+        if (arg.find('[') != std::string::npos) {
+            // Start of a new vector
+            currentVector = arg;
+        } else if (arg.find(']') != std::string::npos) {
+            // End of the current vector
+            currentVector += " " + arg;
+            std::vector<double> nums = parseNumbers(currentVector);
+            basis.emplace_back(nums.begin(), nums.end());
+        } else {
+            // Middle of a vector
+            currentVector += " " + arg;
+        }
+    }
+
+    // Output constructed vectors
+    for (const Vector& v : basis) {
+        v.print();
+    }
+
+
+/*    
     // Example input basis vectors using Vector
-    std::vector<Vector> basis = {
+std::vector<Vector> basis = {
+    Vector{142.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+    Vector{67.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+    Vector{228.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+    Vector{223.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+    Vector{44.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0},
+    Vector{96.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0},
+    Vector{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0},
+    Vector{9.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0},
+    Vector{26.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0},
+    Vector{119.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}
+};*/
+
+/*
+   std::vector<Vector> basis = {
         Vector{33572.0, 1.0, 0.0, 0.0, 0.0},
         Vector{29630.0, 0.0, 1.0, 0.0, 0.0},
         Vector{37745.0, 0.0, 0.0, 1.0, 0.0},
         Vector{33964.0, 0.0, 0.0, 0.0, 1.0},
         Vector{30041.0, 0.0, 0.0, 0.0 ,0.0}
     };
-    */
-
+*/
+/*
     std::vector<Vector> basis = {
     Vector{18233387064406223333.0, 6057754823325903888.0, 5020984478179518940.0, 18221048837946171917.0, 16775327012147291791.0, 6963665425023959770.0, 1906482478776844658.0, 16867910280460595765.0, 14512658240978285231.0, 13940363623605040253.0},
     Vector{1304049432871277722.0, 9686693642972540964.0, 9075049953749770743.0, 4068588698091256631.0, 6701323702632131635.0, 1040868273713486820.0, 12092451019628235092.0, 17138196595752657261.0, 9035619191975369552.0, 16463337914887290452.0},
@@ -30,7 +89,9 @@ int main() {
     Vector{4361061068864080717.0, 4953985410699416276.0, 15915959799209557277.0, 348745238925921139.0, 17808839924986030385.0, 1609446254122703046.0, 4834241523580558387.0, 7010849487498176245.0, 5747324656677680741.0, 17333710919399855405.0}, 
     Vector{5769341568476438786.0, 14927862630690910494.0, 11048711986554548732.0, 11603696945419821920.0, 14733279968787837914.0, 6491210692015611570.0, 1184863128538747614.0, 8437181526863921893.0, 1565954887538852838.0, 15468556867709203265.0}
     };
-
+*/
+    // n is the common size for most vectors
+    Vector::commonSize = basis.size();
     // Create an instance of the Lattice class
     Lattice Lattice(basis);
     Vector SV;
@@ -42,6 +103,16 @@ int main() {
     SV.print();
     //SV.print();
     std::cout << "SV length: " << SV.norm() << std::endl;
-    // Print out the Gram-Schmidt basis vectors
+
+/*
+    auto start = std::chrono::high_resolution_clock::now();
+    
+    // Call your dot product method
+    double result = basis[1].dot(basis[2]);
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> duration = end - start;
+    std::cout << "Time taken: " << duration.count() << " ms" << std::endl;
+    */
     return 0;
 }

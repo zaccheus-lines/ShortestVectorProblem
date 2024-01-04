@@ -1,6 +1,6 @@
 # Compiler and compiler flags
 CXX = g++
-CXXFLAGS = -Wall -Werror -std=c++11
+CXXFLAGS = -Wall -Werror -std=c++11 -pg -pthread
 
 # Default target
 all: runme
@@ -20,6 +20,6 @@ test: tests/test.o
 
 # Clean up
 clean:
-		rm -rf src/*.o tests/*.o runme test
+		rm -rf src/*.o tests/*.o runme test gmon.out analysis.txt
 
 .PHONY: all clean test

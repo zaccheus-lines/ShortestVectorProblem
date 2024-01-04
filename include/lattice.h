@@ -8,7 +8,8 @@ public:
     std::vector<Vector> orthogonalizedVectors;
 
     // Constructor that takes a basis
-    Lattice(const std::vector<Vector>& basis) : basis_(basis) {}
+    Lattice(const std::vector<Vector>& basis) 
+    : basis_(basis), n(basis.size()) {}
     
 
     // Destructor
@@ -61,7 +62,7 @@ public:
 
     Vector gramSchmidt(){
 
-        size_t n = basis_.size();
+        //size_t n = basis_.size();
 
         // Resize the mu matrix
         mu_.resize(n, std::vector<double>(n, 0.0));
@@ -102,8 +103,9 @@ public:
     norms = gramSchmidt();
     double R = norms.max();
     norms.print();
-    size_t n = basis_.size();
-    Vector rho(n + 1), v(n), c(n), w(n), s(n);
+    //size_t n = basis_.size();
+    std::vector<double> rho(n + 1, 0.0);
+    Vector v(n), c(n), w(n), s(n);
     v[0]=1;
     size_t k = 0, last_nonzero = 0;
     double R2 = R * R;
@@ -149,6 +151,7 @@ public:
 
 private:
     std::vector<Vector> basis_;
+    size_t n;
     std::vector<std::vector<double>> mu_; // µ coefficients
     Vector norms; // Norms of the orthogonalized vectors
     

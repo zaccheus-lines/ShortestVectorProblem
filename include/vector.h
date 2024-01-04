@@ -2,17 +2,23 @@
 #include <vector>
 #include <cmath>
 #include <initializer_list>
+#include <future>
 
 class Vector{
 public:
+    static size_t commonSize;
+
     // Default constructor
-    Vector() {}
+    Vector() : data(commonSize, 0.0) {}
 
     // Constructor with initializer list
     Vector(std::initializer_list<double> list) : data(list) {}
 
     // Constructor with size
     Vector(size_t size) : data(size, 0.0) {}
+
+    template <typename Iter>
+    Vector(Iter begin, Iter end) : data(begin, end) {}
 
     // Copy constructor
     Vector(const Vector& other) : data(other.data) {}
@@ -53,17 +59,19 @@ public:
 }
     // Overload the [] operator for non-const access
     double& operator[](size_t index) {
-        if (index >= data.size()) {
+        /*
+        if (index >= commonSize) {
             throw std::out_of_range("Index out of range");
-        }
+        }*/
         return data[index];
     }
 
     // Overload the [] operator for const access
     const double& operator[](size_t index) const {
-        if (index >= data.size()) {
+        /*
+        if (index >= commonSize) {
             throw std::out_of_range("Index out of range");
-        }
+        }*/
         return data[index];
     }
 
@@ -78,9 +86,9 @@ public:
 
     // Addition
     Vector operator+(const Vector& other) const {
-        checkDimension(other);
+        //
         Vector result = *this;
-        for (size_t i = 0; i < data.size(); ++i) {
+        for (size_t i = 0; i < commonSize; ++i) {
             result.data[i] += other.data[i];
         }
         return result;
@@ -88,9 +96,9 @@ public:
 
     // Subtraction
     Vector operator-(const Vector& other) const {
-        checkDimension(other);
+        //
         Vector result = *this;
-        for (size_t i = 0; i < data.size(); ++i) {
+        for (size_t i = 0; i < commonSize; ++i) {
             result.data[i] -= other.data[i];
         }
         return result;
@@ -105,20 +113,6 @@ public:
         }}
     }
 
-    void scalar_mult(double& r) {
-        for (size_t i = 0; i < this->size(); ++i) {
-            (*this)[i] = r * (*this)[i];
-        }}
-
-    void scalar_sub(double& r, Vector& other) {
-        if (this->size() != other.size()) {
-            throw std::invalid_argument("Input vectors must have the same size");
-        }
-
-        for (size_t i = 0; i < this->size(); ++i) {
-            other[i] -= r * (*this)[i];
-        }}
-
     // Scalar multiplication
     Vector operator*(double scalar) const {
         Vector result = *this;
@@ -127,28 +121,55 @@ public:
         }
         return result;
     }
-
+/*
     // Dot product
     double dot(const Vector& other) const {
-        checkDimension(other);
+        //checkDimension(other);
         double sum = 0.0;
-        for (size_t i = 0; i < data.size(); ++i) {
+        for (size_t i = 0; i < commonSize; ++i) {
             sum += this->data[i] * other.data[i];
         }
         return sum;
     }
+*/
+    double dot(const Vector& other) const {
+        size_t numThreads = std::thread::hardware_concurrency();
+        std::vector<std::future<double>> futures;
+
+        size_t chunkSize = commonSize / numThreads;
+        for (size_t i = 0; i < numThreads; ++i) {
+            size_t start = i * chunkSize;
+            size_t end = (i == numThreads - 1) ? commonSize : start + chunkSize;
+
+            futures.push_back(std::async(std::launch::async, [&, start, end]() {
+                double partialSum = 0.0;
+                for (size_t j = start; j < end; ++j) {
+                    partialSum += this->data[j] * other.data[j];
+                }
+                return partialSum;
+            }));
+        }
+
+        double sum = 0.0;
+        for (auto& future : futures) {
+            sum += future.get();
+        }
+
+        return sum;
+    }
 
     size_t size() const {
-        return data.size();
+        return commonSize;
     }
     
     double max() const {
+        /*
         if (data.empty()) {
             throw std::runtime_error("Vector is empty");
-        }
+        }*/
 
         double maxElem = data[0];
-        for (double elem : data) {
+        for (const double& elem : data) {
             if (elem > maxElem) {
                 maxElem = elem;
             }
@@ -156,12 +177,12 @@ public:
         return maxElem;
     }
 
-    // Utility function to check dimensions
+ /*  // Utility function to check dimensions
     void checkDimension(const Vector& other) const {
-        if (data.size() != other.data.size()) {
+        if (commonSize != other.commonSize) {
             throw std::invalid_argument("Vectors must be of the same dimension");
         }
-    }
+    }*/
 private:
     std::vector<double> data;
 };
