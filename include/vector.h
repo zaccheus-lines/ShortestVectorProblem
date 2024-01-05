@@ -104,6 +104,26 @@ public:
         return result;
     }
 
+    // Operator += for element-wise addition
+    Vector& operator+=(const Vector& other) {
+        
+        for (size_t i = 0; i < commonSize; ++i) {
+            data[i] += other.data[i];
+        }
+
+        return *this; // Return the current object by reference
+    }
+
+    // Operator -= for element-wise subtraction
+    Vector& operator-=(const Vector& other) {
+
+        for (size_t i = 0; i < commonSize; ++i) {
+            data[i] -= other.data[i];
+        }
+
+        return *this; // Return the current object by reference
+    }
+
     // Normalize the vector
     void normalise() {
         double magnitude = norm();
@@ -121,7 +141,7 @@ public:
         }
         return result;
     }
-/*
+
     // Dot product
     double dot(const Vector& other) const {
         //checkDimension(other);
@@ -131,43 +151,13 @@ public:
         }
         return sum;
     }
-*/
-    double dot(const Vector& other) const {
-        size_t numThreads = std::thread::hardware_concurrency();
-        std::vector<std::future<double>> futures;
-
-        size_t chunkSize = commonSize / numThreads;
-        for (size_t i = 0; i < numThreads; ++i) {
-            size_t start = i * chunkSize;
-            size_t end = (i == numThreads - 1) ? commonSize : start + chunkSize;
-
-            futures.push_back(std::async(std::launch::async, [&, start, end]() {
-                double partialSum = 0.0;
-                for (size_t j = start; j < end; ++j) {
-                    partialSum += this->data[j] * other.data[j];
-                }
-                return partialSum;
-            }));
-        }
-
-        double sum = 0.0;
-        for (auto& future : futures) {
-            sum += future.get();
-        }
-
-        return sum;
-    }
 
     size_t size() const {
-        return commonSize;
+        return data.size();
     }
-    
-    double max() const {
-        /*
-        if (data.empty()) {
-            throw std::runtime_error("Vector is empty");
-        }*/
 
+    double max() const {
+       
         double maxElem = data[0];
         for (const double& elem : data) {
             if (elem > maxElem) {

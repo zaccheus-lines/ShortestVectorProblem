@@ -8,8 +8,12 @@ public:
     std::vector<Vector> orthogonalizedVectors;
 
     // Constructor that takes a basis
-    Lattice(const std::vector<Vector>& basis) 
-    : basis_(basis), n(basis.size()) {}
+    Lattice(const std::vector<Vector>& basis)
+    : basis_(basis), n(basis.size()), norms(n) {
+        mu_.resize(n, std::vector<double>(n, 0.0));
+        orthogonalizedVectors.resize(n);
+    }
+
     
 
     // Destructor
@@ -22,7 +26,6 @@ public:
     : basis_(other.basis_), mu_(other.mu_), norms(other.norms) {
     // Ensure that all members, especially norms, are copied properly
     }
-
 
     // Copy assignment operator
     Lattice& operator=(const Lattice& other) {
@@ -60,92 +63,122 @@ public:
         return basis_.end();
     }
 
-    Vector gramSchmidt(){
+    bool isBasis(const std::vector<Vector>& potentialBasis) {
+        // Set the basis of the lattice to the potential basis
+        basis_ = potentialBasis;
 
-        //size_t n = basis_.size();
+        // Recompute Gram-Schmidt for the new basis
+        gramSchmidt();
 
-        // Resize the mu matrix
-        mu_.resize(n, std::vector<double>(n, 0.0));
-        Vector norms(n);
-
-        // Orthogonalized vectors
-        std::vector<Vector> orthogonalizedVectors(n);
-        orthogonalizedVectors[0] = basis_[0];
-
-        for (size_t i = 1; i < n; ++i) {
-            
-            Vector x(n);
-
-            for (size_t j = 0; j < i; ++j) {
-                // Calculate mu coefficient
-                mu_[i][j] = basis_[i].dot(orthogonalizedVectors[j]) / orthogonalizedVectors[j].dot(orthogonalizedVectors[j]);
+        // Check if any of the norms is zero (indicating a zero vector was produced)
+        for (size_t i = 0; i < n; ++i) {
+            if (norms[i] == 0.0) {
+                return false; // A zero norm indicates linear dependence
             }
-            for (size_t j = 0; j < i; ++j) {
-                x = x + orthogonalizedVectors[j]*mu_[i][j];
-            }
-            orthogonalizedVectors[i] = basis_[i] - x; 
-
-
-        // Store the squared norm before normalization
-        
-
-        /*for (Vector& vector : orthogonalizedVectors) {
-            vector.print();}*/
-
         }
-        for (size_t i = 0; i < n; ++i){
-            norms[i] = orthogonalizedVectors[i].norm()*orthogonalizedVectors[i].norm();
+
+    return true; // All vectors are linearly independent
+}
+
+    void gramSchmidt(size_t startFrom = 0) {
+
+        if (startFrom == 0) {
+            orthogonalizedVectors[0] = basis_[0];
+            norms[0] = orthogonalizedVectors[0].dot(orthogonalizedVectors[0]);
+        }
+
+        for (size_t i = startFrom; i < n; ++i) {
+            Vector x;
+
+            for (size_t j = 0; j < i; ++j) {
+                double normSquared = orthogonalizedVectors[j].dot(orthogonalizedVectors[j]);
+                if (normSquared == 0.0) continue; // Skip zero vector to avoid division by zero
+
+                mu_[i][j] = basis_[i].dot(orthogonalizedVectors[j]) / normSquared;
+                x += orthogonalizedVectors[j] * mu_[i][j];
             }
-        return norms;
+
+            orthogonalizedVectors[i] = basis_[i] - x;
+            norms[i] = orthogonalizedVectors[i].dot(orthogonalizedVectors[i]);
+        }
+    }
+
+    void LLL(){
+        double delta = 0.5;
+        size_t k = 1;
+        gramSchmidt();
+        while (k < n) {
+            //std::cout << k << std::endl;
+            // Size Reduction
+            for (int j = k -1; j >= 0; --j) {
+                if (std::abs(mu_[k][j]) > 0.5) {
+                    // Size reduce bk
+                    basis_[k] -= basis_[j] * std::round(mu_[k][j]) ;
+    
+                    gramSchmidt(k);
+
+                }
+            }
+            // Lovász Condition
+            if (norms[k] > (delta - mu_[k][k-1] * mu_[k][k-1]) * norms[k-1]) {
+                ++k;
+            } else {
+                // Swap bk and bk-1
+                std::swap(basis_[k], basis_[k-1]);
+                // Recompute Gram-Schmidt and mu
+                gramSchmidt(k-1);
+                k = std::max(static_cast<unsigned int>(k-1), 1u);
+
+            }
+        }
     }
 
     Vector schnorrEuchnerEnumeration() {
-    norms = gramSchmidt();
-    double R = norms.max();
-    norms.print();
-    //size_t n = basis_.size();
-    std::vector<double> rho(n + 1, 0.0);
-    Vector v(n), c(n), w(n), s(n);
-    v[0]=1;
-    size_t k = 0, last_nonzero = 0;
-    double R2 = R * R;
+        gramSchmidt();
+        double R = norms.max()+1;
+        //norms.print();
+        std::vector<double> rho(n + 1, 0.0);
+        Vector v(n), c(n), w(n), s(n);
+        v[0]=1;
+        size_t k = 0, last_nonzero = 0;
+        double R2 = R * R;
 
-    while (true) {
-        rho[k] = rho[k + 1] + (v[k] - c[k]) * (v[k] - c[k]) * norms[k];
+        while (true) {
+            rho[k] = rho[k + 1] + (v[k] - c[k]) * (v[k] - c[k]) * norms[k];
 
-        // Debugging output
-        std::cout << "k: " << k << ", rho[k]: " << rho[k] << ", R2: " << R2 << std::endl;
+            // Debugging output
+            // std::cout << "k: " << k << ", rho[k]: " << rho[k] << ", R2: " << R2 << std::endl;
 
-        if (rho[k] < R2) {
-            if (k == 0) {
-                R2 = rho[k];
-                s = Vector(n);
-                for (size_t i = 0; i < n; i++){
-                    s = s + basis_[i]*v[i];
-                    }
+            if (rho[k] < R2) {
+                if (k == 0) {
+                    R2 = rho[k];
+                    s = Vector(n);
+                    for (size_t i = 0; i < n; i++){
+                        s += basis_[i]*v[i];
+                        }
+                } else {
+                    k -= 1;
+                    c[k] = 0;
+                    for (size_t i = k; i < n; ++i){
+                        c[k] -= mu_[i][k] * v[i];
+                        }
+                    v[k] = round(c[k]);
+                    w[k] = 1;
+                }
             } else {
-                k -= 1;
-                c[k] = 0;
-                for (size_t i = k; i < n; ++i){
-                    c[k] = c[k] - mu_[i][k] * v[i];
-                    }
-                v[k] = round(c[k]);
-                w[k] = 1;
-            }
-        } else {
-            k += 1;
-            if (k == n) return s;
-            if (k >= last_nonzero) {
-                last_nonzero = k;
-                v[k] += 1;
-            } else {
-                if (v[k] > c[k]) v[k] -= w[k];
-                else v[k] += w[k];
-                w[k] += 1;
+                k += 1;
+                if (k == n) return s;
+                if (k >= last_nonzero) {
+                    last_nonzero = k;
+                    v[k] += 1;
+                } else {
+                    if (v[k] > c[k]) v[k] -= w[k];
+                    else v[k] += w[k];
+                    w[k] += 1;
+                }
             }
         }
     }
-}
 
 
 
