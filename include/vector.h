@@ -3,6 +3,8 @@
 #include <cmath>
 #include <initializer_list>
 #include <future>
+#include <iomanip>
+
 
 class Vector{
 public:
@@ -12,7 +14,7 @@ public:
     Vector() : data(commonSize, 0.0) {}
 
     // Constructor with initializer list
-    Vector(std::initializer_list<double> list) : data(list) {}
+    Vector(std::initializer_list<long double> list) : data(list) {}
 
     // Constructor with size
     Vector(size_t size) : data(size, 0.0) {}
@@ -46,19 +48,20 @@ public:
     }
 
     // Dynamic addition
-    void push_back(double value) {
+    void push_back(long double value) {
         data.push_back(value);
     }
 
     // Method to print the vector
     void print() const {
-        for (const double& element : data) {
+        std::cout << std::fixed << std::setprecision(15); // Set precision to 15 decimal places
+        for (const long double& element : data) {
             std::cout << element << " ";
         }
-        std::cout << std::endl; 
-}
+        std::cout << std::endl;
+    }
     // Overload the [] operator for non-const access
-    double& operator[](size_t index) {
+    long double& operator[](size_t index) {
         /*
         if (index >= commonSize) {
             throw std::out_of_range("Index out of range");
@@ -67,7 +70,7 @@ public:
     }
 
     // Overload the [] operator for const access
-    const double& operator[](size_t index) const {
+    const long double& operator[](size_t index) const {
         /*
         if (index >= commonSize) {
             throw std::out_of_range("Index out of range");
@@ -76,8 +79,8 @@ public:
     }
 
     // Euclidean norm (magnitude)
-    double norm() const {
-        double sum = 0.0;
+    long double norm() const {
+        long double sum = 0.0;
         for (auto& val : data) {
             sum += val * val;
         }
@@ -126,26 +129,26 @@ public:
 
     // Normalize the vector
     void normalise() {
-        double magnitude = norm();
+        long double magnitude = norm();
         if (magnitude != 0.0) {
-            for (double& val : data) {
+            for (long double& val : data) {
                 val /= magnitude;
         }}
     }
 
     // Scalar multiplication
-    Vector operator*(double scalar) const {
+    Vector operator*(long double scalar) const {
         Vector result = *this;
-        for (double& val : result.data) {
+        for (long double& val : result.data) {
             val *= scalar;
         }
         return result;
     }
 
     // Dot product
-    double dot(const Vector& other) const {
+    long double dot(const Vector& other) const {
         //checkDimension(other);
-        double sum = 0.0;
+        long double sum = 0.0;
         for (size_t i = 0; i < commonSize; ++i) {
             sum += this->data[i] * other.data[i];
         }
@@ -156,10 +159,10 @@ public:
         return data.size();
     }
 
-    double max() const {
+    long double max() const {
        
-        double maxElem = data[0];
-        for (const double& elem : data) {
+        long double maxElem = data[0];
+        for (const long double& elem : data) {
             if (elem > maxElem) {
                 maxElem = elem;
             }
@@ -174,5 +177,5 @@ public:
         }
     }*/
 private:
-    std::vector<double> data;
+    std::vector<long double> data;
 };

@@ -2,6 +2,7 @@
 #include <vector>
 #include <set>
 #include "vector.h"
+#include <cfenv>
 
 class Lattice {
 public:
@@ -10,7 +11,7 @@ public:
     // Constructor that takes a basis
     Lattice(const std::vector<Vector>& basis)
     : basis_(basis), n(basis.size()), norms(n) {
-        mu_.resize(n, std::vector<double>(n, 0.0));
+        mu_.resize(n, std::vector<long double>(n, 0.0));
         orthogonalizedVectors.resize(n);
     }
 
@@ -67,7 +68,14 @@ public:
         // Set the basis of the lattice to the potential basis
         basis_ = potentialBasis;
 
-        // Recompute Gram-Schmidt for the new basis
+        size_t dimension = basis_.size();
+        for (const auto& vec : basis_) {
+            if (vec.size() != dimension) {
+                return false;
+        }
+        }
+
+        // Gram-Schmidt for the new basis
         gramSchmidt();
 
         // Check if any of the norms is zero (indicating a zero vector was produced)
@@ -91,10 +99,10 @@ public:
             Vector x;
 
             for (size_t j = 0; j < i; ++j) {
-                double normSquared = orthogonalizedVectors[j].dot(orthogonalizedVectors[j]);
-                if (normSquared == 0.0) continue; // Skip zero vector to avoid division by zero
+                long double normSquared = orthogonalizedVectors[j].dot(orthogonalizedVectors[j]);
+                if (normSquared < epsilon) continue; // Skip zero vector to avoid division by zero
 
-                mu_[i][j] = basis_[i].dot(orthogonalizedVectors[j]) / normSquared;
+                mu_[i][j] = basis_[i].dot(orthogonalizedVectors[j]) * (1/normSquared);
                 x += orthogonalizedVectors[j] * mu_[i][j];
             }
 
@@ -102,9 +110,10 @@ public:
             norms[i] = orthogonalizedVectors[i].dot(orthogonalizedVectors[i]);
         }
     }
+    
 
     void LLL(){
-        double delta = 0.5;
+        long double delta = 0.75;
         size_t k = 1;
         gramSchmidt();
         while (k < n) {
@@ -135,13 +144,13 @@ public:
 
     Vector schnorrEuchnerEnumeration() {
         gramSchmidt();
-        double R = norms.max()+1;
+        long double R = norms.max()+1;
         //norms.print();
-        std::vector<double> rho(n + 1, 0.0);
+        std::vector<long double> rho(n + 1, 0.0);
         Vector v(n), c(n), w(n), s(n);
         v[0]=1;
         size_t k = 0, last_nonzero = 0;
-        double R2 = R * R;
+        long double R2 = R * R;
 
         while (true) {
             rho[k] = rho[k + 1] + (v[k] - c[k]) * (v[k] - c[k]) * norms[k];
@@ -162,7 +171,7 @@ public:
                     for (size_t i = k; i < n; ++i){
                         c[k] -= mu_[i][k] * v[i];
                         }
-                    v[k] = round(c[k]);
+                    v[k] = std::round(c[k]);
                     w[k] = 1;
                 }
             } else {
@@ -177,15 +186,16 @@ public:
                     w[k] += 1;
                 }
             }
+
         }
+        
     }
-
-
 
 private:
     std::vector<Vector> basis_;
     size_t n;
-    std::vector<std::vector<double>> mu_; // µ coefficients
+    std::vector<std::vector<long double>> mu_; // µ coefficients
     Vector norms; // Norms of the orthogonalized vectors
+    const long double epsilon = 1e-10; // Define epsilon here
     
 };
