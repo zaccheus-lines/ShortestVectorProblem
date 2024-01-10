@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
             currentVector.clear(); // Clear the current vector string
         }
     }
-    // n is the common size for most vectors
+    // n is the common size of a vector. 
     Vector::commonSize = basis.size();
     // Create an instance of the Lattice class
     Lattice Lattice(basis);
@@ -64,15 +64,7 @@ int main(int argc, char* argv[]) {
 
 
     Lattice.LLL();
-    //Lattice.gramSchmidt();
-/*
-    for (Vector vec: Lattice.orthogonalizedVectors){
-        vec.normalise();
-        vec.print();} */
     SV = Lattice.schnorrEuchnerEnumeration();
-    /*for (Vector& vector : Lattice) {
-            vector.print();} */
-    //SV.print();
 
    SVL = SV.norm();
    std::cout << std::fixed << std::setprecision(16) << SVL << std::endl;
@@ -87,7 +79,7 @@ int main(int argc, char* argv[]) {
 
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<long double, std::milli> duration = end - start;
-    //std::cout << "Time taken: " << duration.count() << " ms" << std::endl;
+    std::cout << "Time taken: " << duration.count() << " ms" << std::endl;
 
     return 0;
 }

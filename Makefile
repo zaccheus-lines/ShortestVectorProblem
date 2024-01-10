@@ -1,6 +1,6 @@
 # Compiler and compiler flags
 CXX = g++
-CXXFLAGS = -Wall -Werror -std=c++11 -pg -pthread
+CXXFLAGS = -Wall -Werror -std=c++11 -pg
 
 # Default target
 all: runme
@@ -14,8 +14,8 @@ runme: src/main.o
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Rule to create the test executable and run it
-test: tests/test.o
-		$(CXX) $(CXXFLAGS) -o test tests/test.o
+test: tests/test.sh
+		chmod +x  tests/test.o
 		./test
 
 # Clean up

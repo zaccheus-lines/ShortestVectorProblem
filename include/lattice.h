@@ -144,7 +144,7 @@ public:
 
     Vector schnorrEuchnerEnumeration() {
         gramSchmidt();
-        long double R = norms.max()+1;
+        long double R = norms.max();
         //norms.print();
         std::vector<long double> rho(n + 1, 0.0);
         Vector v(n), c(n), w(n), s(n);
