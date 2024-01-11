@@ -8,7 +8,7 @@
 class Lattice {
 public:
     // Constructors
-    explicit Lattice(const std::vector<Vector*>& basis);
+    explicit Lattice(Vector** basis, int size);
     Lattice(const Lattice& other); // Copy constructor
     Lattice(Lattice&& other) noexcept; // Move constructor
 
@@ -20,7 +20,7 @@ public:
     Lattice& operator=(Lattice&& other) noexcept; // Move assignment
 
     // Public member functions
-    bool isBasis(const std::vector<Vector*>& potentialBasis);
+    bool isBasis(Vector** potentialBasis);
     void gramSchmidt(size_t startFrom = 0);
     void LLL();
     Vector schnorrEuchnerEnumeration();
@@ -36,15 +36,16 @@ public:
     */
 
     // Other public members
-    std::vector<Vector> orthogonalizedVectors;
+    
 
 private:
     // Private member variables
-    std::vector<Vector*> basis_;
+    Vector** basis_;
     size_t n;
-    std::vector<std::vector<long double>> mu_; // µ coefficients
+    std::vector<std::vector<double>> mu_; // µ coefficients
     Vector norms; // Norms of the orthogonalized vectors
-    const long double epsilon = 1e-10; // Define epsilon here
+    const double epsilon = 1e-10; // Define epsilon here
+    std::vector<Vector> orthogonalizedVectors;
 };
 
 #endif // LATTICE_H

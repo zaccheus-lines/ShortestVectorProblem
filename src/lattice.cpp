@@ -3,11 +3,11 @@
 #include <algorithm> // For std::max, std::swap
 
 // Constructor
-Lattice::Lattice(const std::vector<Vector*>& basis)
-    : basis_(basis), n(basis.size()), norms(n) {
-    mu_.resize(n, std::vector<long double>(n, 0.0));
+// Constructor
+Lattice::Lattice(Vector** basis, int size)
+    : basis_(basis), n(size), norms(n) {
+    mu_.resize(n, std::vector<double>(n, 0.0));
     orthogonalizedVectors.resize(n);
-    gramSchmidt();
 }
 
 // Destructor
@@ -38,11 +38,10 @@ Lattice::Lattice(Lattice&& other) noexcept
 }
 
 // isBasis implementation
-bool Lattice::isBasis(const std::vector<Vector*>& potentialBasis) {
+bool Lattice::isBasis(Vector** potentialBasis) {
     basis_ = potentialBasis;
-    size_t dimension = basis_.size();
-    for (const auto& vec : basis_) {
-        if (vec->size() != dimension) {
+    for (size_t i = 0; i < n; ++i)  {
+        if (basis_[i]->size() != n) {
             return false;
         }
     }
@@ -66,7 +65,7 @@ void Lattice::gramSchmidt(size_t startFrom) {
     for (size_t i = startFrom; i < n; ++i) {
         Vector x;
         for (size_t j = 0; j < i; ++j) {
-            long double normSquared = orthogonalizedVectors[j].dot(orthogonalizedVectors[j]);
+            double normSquared = orthogonalizedVectors[j].dot(orthogonalizedVectors[j]);
             if (normSquared < epsilon) continue;
 
             mu_[i][j] = basis_[i]->dot(orthogonalizedVectors[j]) * (1/normSquared);
@@ -79,7 +78,7 @@ void Lattice::gramSchmidt(size_t startFrom) {
 
 // LLL implementation
 void Lattice::LLL() {
-    long double delta = 0.75;
+    double delta = 0.75;
     size_t k = 1;
     gramSchmidt();
     while (k < n) {

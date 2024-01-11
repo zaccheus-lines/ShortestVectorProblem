@@ -8,7 +8,7 @@ class Vector {
 public:
     // Constructors
     Vector();
-    Vector(std::initializer_list<long double> list);
+    Vector(std::initializer_list<double> list);
     Vector(size_t size);
 
     template <typename Iter>
@@ -30,25 +30,25 @@ public:
     Vector& operator=(Vector&& other) noexcept;
 
     // Methods
-    void push_back(long double value);
+    void push_back(double value);
     void print() const;
-    long double& operator[](size_t index);
-    const long double& operator[](size_t index) const;
-    long double norm() const;
+    double& operator[](size_t index);
+    const double& operator[](size_t index) const;
+    double norm() const;
     Vector operator+(const Vector& other) const;
     Vector operator-(const Vector& other) const;
     Vector& operator+=(const Vector& other);
     Vector& operator-=(const Vector& other);
     void normalise();
-    Vector operator*(long double scalar) const;
-    long double dot(const Vector& other) const;
+    Vector operator*(double scalar) const;
+    double dot(const Vector& other) const;
     size_t size() const;
-    long double max() const;
+    double max() const;
 
     static size_t commonSize;
 
 private:
-    std::vector<long double> data;
+    std::vector<double> data;
 };
 
 #endif // VECTOR_H
