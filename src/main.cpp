@@ -2,11 +2,11 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include <iterator>
-#include "../include/lattice.h"
-#include <cstdlib>
+#include <cmath>
 #include <chrono>
 #include <iomanip>
+#include <cstdlib>
+#include "../include/lattice.h"
 
 std::vector<long double> parseNumbers(const std::string& str) {
     std::vector<long double> numbers;
@@ -26,12 +26,20 @@ std::vector<long double> parseNumbers(const std::string& str) {
 
 }
 
-size_t Vector::commonSize = 0;  // Definition
-
 int main(int argc, char* argv[]) {
+    if (argc <= 1) {
+        std::cerr << "Error: No vectors provided." << std::endl;
+        return 1;
+    }
 
-    auto start = std::chrono::high_resolution_clock::now();
-    std::vector<Vector> basis;
+    double sqrt_val = std::sqrt(argc - 1);
+    if (std::floor(sqrt_val) != sqrt_val) {
+        std::cerr << "Wrong format: Number of arguments is not a perfect square." << std::endl;
+        return 1;
+    }
+
+    std::vector<Vector*> basis;
+    basis.reserve(sqrt_val);
     std::string currentVector;
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];
@@ -48,10 +56,13 @@ int main(int argc, char* argv[]) {
         if (arg.find(']') != std::string::npos) {
             // End of the current vector, parse it
             std::vector<long double> nums = parseNumbers(currentVector);
-            basis.emplace_back(nums.begin(), nums.end());
+            Vector* newVector = new Vector(nums.begin(), nums.end());
+            basis.push_back(newVector);
             currentVector.clear(); // Clear the current vector string
         }
     }
+  
+
     // n is the common size of a vector. 
     Vector::commonSize = basis.size();
     // Create an instance of the Lattice class
@@ -62,20 +73,18 @@ int main(int argc, char* argv[]) {
     Vector SV;
     long double SVL;
 
+    auto start = std::chrono::high_resolution_clock::now();
 
     Lattice.LLL();
     SV = Lattice.schnorrEuchnerEnumeration();
+    
+    for (Vector* vec : basis) {
+        delete vec;
+    }
 
    SVL = SV.norm();
    std::cout << std::fixed << std::setprecision(16) << SVL << std::endl;
    //std::cout << SVL << std::endl;
-
-
-
-
-    
-    
-    
 
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<long double, std::milli> duration = end - start;
