@@ -21,7 +21,7 @@ public:
 
     // Public member functions
     bool isBasis(Vector** potentialBasis);
-    void gramSchmidt(size_t startFrom = 0);
+    void gramSchmidt(int startFrom = 0);
     void LLL();
     Vector schnorrEuchnerEnumeration();
 
@@ -41,7 +41,7 @@ public:
 private:
     // Private member variables
     Vector** basis_;
-    size_t n;
+    int n;
     std::vector<std::vector<double>> mu_; // µ coefficients
     Vector norms; // Norms of the orthogonalized vectors
     const double epsilon = 1e-10; // Define epsilon here

@@ -5,9 +5,8 @@
 // Constructor
 // Constructor
 Lattice::Lattice(Vector** basis, int size)
-    : basis_(basis), n(size), norms(n) {
+    : basis_(basis), n(size), norms(n), orthogonalizedVectors(size, Vector(n)) {
     mu_.resize(n, std::vector<double>(n, 0.0));
-    orthogonalizedVectors.resize(n);
 }
 
 // Destructor
@@ -40,14 +39,14 @@ Lattice::Lattice(Lattice&& other) noexcept
 // isBasis implementation
 bool Lattice::isBasis(Vector** potentialBasis) {
     basis_ = potentialBasis;
-    for (size_t i = 0; i < n; ++i)  {
-        if (basis_[i]->size() != n) {
+    for (int i = 0; i < n; ++i)  {
+        if (basis_[i]->size != n) {
             return false;
         }
     }
 
     gramSchmidt();
-    for (size_t i = 0; i < n; ++i) {
+    for (int i = 0; i < n; ++i) {
         if (norms[i] == 0.0) {
             return false;
         }
@@ -56,15 +55,16 @@ bool Lattice::isBasis(Vector** potentialBasis) {
 }
 
 // gramSchmidt implementation
-void Lattice::gramSchmidt(size_t startFrom) {
+void Lattice::gramSchmidt(int startFrom) {
     if (startFrom == 0) {
         orthogonalizedVectors[0] = *basis_[0];
+
         norms[0] = orthogonalizedVectors[0].dot(orthogonalizedVectors[0]);
     }
 
-    for (size_t i = startFrom; i < n; ++i) {
-        Vector x;
-        for (size_t j = 0; j < i; ++j) {
+    for (int i = startFrom; i < n; ++i) {
+        Vector x(n);
+        for (int j = 0; j < i; ++j) {
             double normSquared = orthogonalizedVectors[j].dot(orthogonalizedVectors[j]);
             if (normSquared < epsilon) continue;
 
@@ -79,7 +79,7 @@ void Lattice::gramSchmidt(size_t startFrom) {
 // LLL implementation
 void Lattice::LLL() {
     double delta = 0.75;
-    size_t k = 1;
+    int k = 1;
     gramSchmidt();
     while (k < n) {
         for (int j = k - 1; j >= 0; --j) {
@@ -101,13 +101,13 @@ void Lattice::LLL() {
 // schnorrEuchnerEnumeration implementation
 Vector Lattice::schnorrEuchnerEnumeration() {
         gramSchmidt();
-        long double R = norms.max();
+        double R = norms.max();
         //norms.print();
-        std::vector<long double> rho(n + 1, 0.0);
+        std::vector<double> rho(n + 1, 0.0);
         Vector v(n), c(n), w(n), s(n);
         v[0]=1;
-        size_t k = 0, last_nonzero = 0;
-        long double R2 = R * R;
+        int k = 0, last_nonzero = 0;
+        double R2 = R * R;
 
         while (true) {
             rho[k] = rho[k + 1] + (v[k] - c[k]) * (v[k] - c[k]) * norms[k];
@@ -119,13 +119,13 @@ Vector Lattice::schnorrEuchnerEnumeration() {
                 if (k == 0) {
                     R2 = rho[k];
                     s = Vector(n);
-                    for (size_t i = 0; i < n; i++){
+                    for (int i = 0; i < n; i++){
                         s += *basis_[i]*v[i];
                         }
                 } else {
                     k -= 1;
                     c[k] = 0;
-                    for (size_t i = k; i < n; ++i){
+                    for (int i = k; i < n; ++i){
                         c[k] -= mu_[i][k] * v[i];
                         }
                     v[k] = std::round(c[k]);

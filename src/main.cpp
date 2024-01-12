@@ -45,6 +45,7 @@ int main(int argc, char* argv[]) {
     
     
 Vector** basis = new Vector*[size];
+
  // Initialize k here
 int k = 0;
 std::string currentVector;
@@ -64,7 +65,7 @@ for (int i = 1; i < argc; ++i) {
         // End of the current vector, parse it
         std::vector<double> nums = parseNumbers(currentVector);
         if (k < size) {
-            Vector* newVector = new Vector(nums.begin(), nums.end());
+            Vector* newVector = new Vector(nums);
             basis[k] = newVector;
             k += 1;
         } else {
@@ -74,15 +75,14 @@ for (int i = 1; i < argc; ++i) {
         currentVector.clear(); // Clear the current vector string
     }
 }
-    // n is the common size of a vector. 
-    Vector::commonSize = size;
+
     // Create an instance of the Lattice class
     Lattice Lattice(basis,size);
 
     if (!Lattice.isBasis(basis)) {
         std::cerr << "Error: The provided vectors do not form a valid basis." << std::endl;
         return 1;}
-    Vector SV;
+    Vector SV = Vector(size);
     double SVL;
 
     auto start = std::chrono::high_resolution_clock::now();

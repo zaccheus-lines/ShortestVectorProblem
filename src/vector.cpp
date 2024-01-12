@@ -4,103 +4,80 @@
 #include <iomanip>
 #include <iostream>
 
-// Static member initialization
-size_t Vector::commonSize = 0;
-
-// Default constructor
-Vector::Vector() : data(commonSize, 0.0) {}
-
-// Constructor with initializer list
-Vector::Vector(std::initializer_list<double> list) : data(list) {}
-
-// Constructor with size
-Vector::Vector(size_t size) : data(size, 0.0) {}
-
-// Copy constructor
-Vector::Vector(const Vector& other) : data(other.data) {}
-
-// Move constructor
-Vector::Vector(Vector&& other) noexcept : data(std::move(other.data)) {}
-
-// Destructor
-Vector::~Vector() {}
-
-// Copy assignment operator
-Vector& Vector::operator=(const Vector& other) {
-    if (this != &other) {
-        data = other.data;
+    Vector::Vector(int n) : size(n) {
+    data = new double[size];
+    for (int i=0; i<size; i++){
+        data[i] = 0;
+    };
     }
-    return *this;
-}
 
-// Move assignment operator
-Vector& Vector::operator=(Vector&& other) noexcept {
-    if (this != &other) {
-        data = std::move(other.data);
+    // Constructor taking a std::vector
+    Vector::Vector(const std::vector<double>& vec) : size(vec.size()) {
+    data = new double[size];
+    std::copy(vec.begin(), vec.end(), data);
     }
-    return *this;
-}
 
-// Dynamic addition
-void Vector::push_back(double value) {
-    data.push_back(value);
-}
-
-// Method to print the vector
-void Vector::print() const {
-    std::cout << std::fixed << std::setprecision(15); // Set precision to 15 decimal places
-    for (const double& element : data) {
-        std::cout << element << " ";
+    // Destructor
+    Vector::~Vector() {
+        delete[] data;
     }
-    std::cout << std::endl;
-}
 
-// Overload the [] operator for non-const access
-double& Vector::operator[](size_t index) {
-    if (index >= data.size()) {
-        throw std::out_of_range("Index out of range");
+// Method to print the array
+    void Vector::print() const {
+        std::cout << std::fixed << std::setprecision(15);
+        for (int i = 0; i < size; ++i) {
+            std::cout << data[i] << " ";
+        }
+        std::cout << std::endl;
     }
-    return data[index];
-}
 
-// Overload the [] operator for const access
-const double& Vector::operator[](size_t index) const {
-    if (index >= data.size()) {
-        throw std::out_of_range("Index out of range");
+    // Overload the [] operator for non-const access
+    double& Vector::operator[](int index) {
+        if (index >= size) {
+            throw std::out_of_range("Index out of range");
+        }
+        return data[index];
     }
-    return data[index];
-}
+
+    // Overload the [] operator for const access
+    const double& Vector::operator[](int index) const {
+        if (index >= size) {
+            throw std::out_of_range("Index out of range");
+        }
+        return data[index];
+    }
+
 
 // Euclidean norm (magnitude)
 double Vector::norm() const {
     double sum = 0.0;
-    for (auto& val : data) {
-        sum += val * val;
+    for (int i =0; i <size; i++) {
+        sum += data[i] * data[i];
     }
     return sqrt(sum);
 }
 
 // Addition
 Vector Vector::operator+(const Vector& other) const {
-    Vector result = *this;
-    for (size_t i = 0; i < data.size(); ++i) {
-        result.data[i] += other.data[i];
+    Vector result(size);
+    for (int i = 0; i < size; ++i) {
+        result.data[i] = data[i] + other.data[i];
     }
     return result;
 }
 
 // Subtraction
 Vector Vector::operator-(const Vector& other) const {
-    Vector result = *this;
-    for (size_t i = 0; i < data.size(); ++i) {
-        result.data[i] -= other.data[i];
+    Vector result(size);
+    for (int i = 0; i < size; ++i) {
+        result.data[i] = data[i] - other.data[i];
     }
     return result;
 }
 
 // Operator += for element-wise addition
 Vector& Vector::operator+=(const Vector& other) {
-    for (size_t i = 0; i < data.size(); ++i) {
+    for (int i = 0; i < size; ++i) {
         data[i] += other.data[i];
     }
     return *this;
@@ -108,27 +85,25 @@ Vector& Vector::operator+=(const Vector& other) {
 
 // Operator -= for element-wise subtraction
 Vector& Vector::operator-=(const Vector& other) {
-    for (size_t i = 0; i < data.size(); ++i) {
+    for (int i = 0; i < size; ++i) {
         data[i] -= other.data[i];
     }
     return *this;
 }
-
-// Normalize the vector
+// Normalise the vector
 void Vector::normalise() {
     double magnitude = norm();
     if (magnitude != 0.0) {
-        for (double& val : data) {
-            val /= magnitude;
+        for (int i = 0; i < size; ++i) {
+            data[i] /= magnitude;
         }
     }
 }
-
 // Scalar multiplication
 Vector Vector::operator*(double scalar) const {
-    Vector result = *this;
-    for (double& val : result.data) {
-        val *= scalar;
+    Vector result(size);
+    for (int i = 0; i < size; ++i) {
+        result.data[i] = data[i] * scalar;
     }
     return result;
 }
@@ -136,21 +111,18 @@ Vector Vector::operator*(double scalar) const {
 // Dot product
 double Vector::dot(const Vector& other) const {
     double sum = 0.0;
-    for (size_t i = 0; i < commonSize; ++i) {
-        sum += this->data[i] * other.data[i];
+    for (int i = 0; i < size; ++i) {
+        sum += data[i] * other.data[i];
     }
     return sum;
 }
 
-size_t Vector::size() const {
-    return data.size();
-}
-
+// Find the maximum element
 double Vector::max() const {
     double maxElem = data[0];
-    for (const double& elem : data) {
-        if (elem > maxElem) {
-            maxElem = elem;
+    for (int i = 1; i < size; ++i) {
+        if (data[i] > maxElem) {
+            maxElem = data[i];
         }
     }
     return maxElem;
