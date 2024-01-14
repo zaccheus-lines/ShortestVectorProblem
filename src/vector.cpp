@@ -4,6 +4,14 @@
 #include <iomanip>
 #include <iostream>
 
+    // Default constructor
+    Vector::Vector() {
+        // Initialize size to 0
+        size = 0;
+        // Initialize data pointer to nullptr
+        data = nullptr;
+}
+
         // Constructor for a given size
     Vector::Vector(int n) : size(n) {
         data = new double[size];
@@ -15,6 +23,10 @@
         data = new double[size];
         std::copy(vec.begin(), vec.end(), data);
     }
+    Vector::Vector(double* arr, int arrSize) : data(arr), size(arrSize) {
+    // No need to allocate new memory or copy data
+    // data now directly points to the passed array
+}
 
     // Copy Constructor
     Vector::Vector(const Vector& other) : size(other.size) {
@@ -56,7 +68,6 @@
         return *this;
     }
 
-    // Rest of your member functions...
 
 
 // Method to print the array

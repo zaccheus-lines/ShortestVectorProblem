@@ -1,16 +1,19 @@
 #include "../include/lattice.h"
 #include <cmath>     // For std::sqrt, std::round, std::abs
 #include <algorithm> // For std::max, std::swap
+#include <iostream>
 
 // Constructor
 // Constructor
 Lattice::Lattice(Vector** basis, int size)
-    : basis_(basis), n(size), norms(n), orthogonalizedVectors(size, Vector(n)) {
+    : basis_(basis), n(size), norms(n) {
     //mu_.resize(n, std::vector<double>(n, 0.0));
     mu_ = new double*[n];
+    orthogonalizedVectors = new Vector[n];
     for (int i = 0; i < n; ++i) {
         mu_[i] = new double[n];
         std::fill(mu_[i], mu_[i] + n, 0.0);
+        orthogonalizedVectors[i] = Vector(n);
     }
 }
 
@@ -22,6 +25,8 @@ Lattice::~Lattice() {
         delete[] mu_[i];
     }
     delete[] mu_;
+    delete[] orthogonalizedVectors;
+    
 }
 
 // Copy constructor
@@ -112,10 +117,10 @@ void Lattice::LLL() {
 // schnorrEuchnerEnumeration implementation
 Vector Lattice::schnorrEuchnerEnumeration() {
         gramSchmidt();
+        
         double R = norms.max()+1;
         //norms.print();
-        std::vector<double> rho(n + 1, 0.0);
-        Vector v(n), c(n), w(n), s(n);
+        Vector v(n), c(n), w(n), s(n), rho(n + 1);
         v[0]=1;
         int k = 0, last_nonzero = 0;
         double R2 = R * R;

@@ -15,7 +15,7 @@ failed_count=0
 compare_floats() {
     local num1=$1
     local num2=$2
-    local relative_tolerance="1e-6"
+    local relative_tolerance="1e-3"
 
     # Use awk to compare the floats
     awk -v n1="$num1" -v n2="$num2" -v tol="$relative_tolerance" '

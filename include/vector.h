@@ -8,17 +8,15 @@ class Vector {
 
 private:
 
-    
-    
-
 public:
     double* data;  // Pointer to the array
     int size;    // Size of the array
 
     // Constructors
+    Vector();
     Vector(int size);
     Vector(const std::vector<double>& vec);
-
+    Vector(double* arr, int arrSize);
     Vector(const Vector& other);
     Vector(Vector&& other) noexcept;
     Vector& operator=(const Vector& other);

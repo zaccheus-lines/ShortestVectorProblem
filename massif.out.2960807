@@ -1,0 +1,631 @@
+desc: (none)
+cmd: ./runme [63203.0 41899.0] [36693.0 57545.0]
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=2185542
+mem_heap_B=37966
+mem_heap_extra_B=10
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=2194524
+mem_heap_B=110670
+mem_heap_extra_B=18
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=2305947
+mem_heap_B=110686
+mem_heap_extra_B=26
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=2326652
+mem_heap_B=110717
+mem_heap_extra_B=35
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=2334381
+mem_heap_B=110735
+mem_heap_extra_B=57
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=2346252
+mem_heap_B=110792
+mem_heap_extra_B=72
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=7
+#-----------
+time=2353190
+mem_heap_B=110792
+mem_heap_extra_B=72
+mem_stacks_B=0
+heap_tree=detailed
+n3: 110792 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 72704 0x4913545: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.28)
+  n1: 72704 0x400FFE1: call_init.part.0 (dl-init.c:72)
+   n1: 72704 0x40100E8: call_init (dl-init.c:30)
+    n1: 72704 0x40100E8: _dl_init (dl-init.c:119)
+     n1: 72704 0x40010C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+      n1: 72704 0x4: ???
+       n1: 72704 0x1FFF0008BA: ???
+        n1: 72704 0x1FFF0008C2: ???
+         n1: 72704 0x1FFF0008CB: ???
+          n1: 72704 0x1FFF0008D4: ???
+           n0: 72704 0x1FFF0008DD: ???
+ n1: 37966 0x4C9A15E: monstartup (gmon.c:153)
+  n1: 37966 0x10B340: __gmon_start__ (in /home/homeblue02/6/qxzm86/Documents/ShortestVectorProblem/runme)
+   n1: 37966 0x4836011: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_massif-amd64-linux.so)
+    n1: 37966 0x1FFF00060F: ???
+     n1: 37966 0x400FFA7: call_init.part.0 (dl-init.c:58)
+      n1: 37966 0x401015D: call_init (dl-init.c:30)
+       n1: 37966 0x401015D: _dl_init (dl-init.c:86)
+        n1: 37966 0x40010C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+         n1: 37966 0x4: ???
+          n1: 37966 0x1FFF0008BA: ???
+           n1: 37966 0x1FFF0008C2: ???
+            n1: 37966 0x1FFF0008CB: ???
+             n1: 37966 0x1FFF0008D4: ???
+              n0: 37966 0x1FFF0008DD: ???
+ n0: 122 in 3 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=8
+#-----------
+time=2355167
+mem_heap_B=110743
+mem_heap_extra_B=73
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=2357829
+mem_heap_B=110800
+mem_heap_extra_B=88
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=10
+#-----------
+time=2359088
+mem_heap_B=110743
+mem_heap_extra_B=73
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=2360960
+mem_heap_B=110759
+mem_heap_extra_B=81
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=2364293
+mem_heap_B=110751
+mem_heap_extra_B=65
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=2367639
+mem_heap_B=110733
+mem_heap_extra_B=43
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=2370340
+mem_heap_B=110749
+mem_heap_extra_B=51
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=2370512
+mem_heap_B=110765
+mem_heap_extra_B=75
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=2372712
+mem_heap_B=110749
+mem_heap_extra_B=67
+mem_stacks_B=0
+heap_tree=detailed
+n3: 110749 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 72704 0x4913545: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.28)
+  n1: 72704 0x400FFE1: call_init.part.0 (dl-init.c:72)
+   n1: 72704 0x40100E8: call_init (dl-init.c:30)
+    n1: 72704 0x40100E8: _dl_init (dl-init.c:119)
+     n1: 72704 0x40010C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+      n1: 72704 0x4: ???
+       n1: 72704 0x1FFF0008BA: ???
+        n1: 72704 0x1FFF0008C2: ???
+         n1: 72704 0x1FFF0008CB: ???
+          n1: 72704 0x1FFF0008D4: ???
+           n0: 72704 0x1FFF0008DD: ???
+ n1: 37966 0x4C9A15E: monstartup (gmon.c:153)
+  n1: 37966 0x10B340: __gmon_start__ (in /home/homeblue02/6/qxzm86/Documents/ShortestVectorProblem/runme)
+   n1: 37966 0x4836011: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_massif-amd64-linux.so)
+    n1: 37966 0x1FFF00060F: ???
+     n1: 37966 0x400FFA7: call_init.part.0 (dl-init.c:58)
+      n1: 37966 0x401015D: call_init (dl-init.c:30)
+       n1: 37966 0x401015D: _dl_init (dl-init.c:86)
+        n1: 37966 0x40010C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+         n1: 37966 0x4: ???
+          n1: 37966 0x1FFF0008BA: ???
+           n1: 37966 0x1FFF0008C2: ???
+            n1: 37966 0x1FFF0008CB: ???
+             n1: 37966 0x1FFF0008D4: ???
+              n0: 37966 0x1FFF0008DD: ???
+ n0: 79 in 6 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=17
+#-----------
+time=2388557
+mem_heap_B=110767
+mem_heap_extra_B=89
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=2389804
+mem_heap_B=110824
+mem_heap_extra_B=104
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=19
+#-----------
+time=2391063
+mem_heap_B=110767
+mem_heap_extra_B=89
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=2392936
+mem_heap_B=110775
+mem_heap_extra_B=105
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=21
+#-----------
+time=2394730
+mem_heap_B=110832
+mem_heap_extra_B=120
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=2395989
+mem_heap_B=110775
+mem_heap_extra_B=105
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=2397861
+mem_heap_B=110791
+mem_heap_extra_B=113
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=24
+#-----------
+time=2400178
+mem_heap_B=110797
+mem_heap_extra_B=107
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=25
+#-----------
+time=2402294
+mem_heap_B=110781
+mem_heap_extra_B=99
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=2404158
+mem_heap_B=110885
+mem_heap_extra_B=147
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=27
+#-----------
+time=2405084
+mem_heap_B=110917
+mem_heap_extra_B=163
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=2406594
+mem_heap_B=110901
+mem_heap_extra_B=155
+mem_stacks_B=0
+heap_tree=detailed
+n3: 110901 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 72704 0x4913545: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.28)
+  n1: 72704 0x400FFE1: call_init.part.0 (dl-init.c:72)
+   n1: 72704 0x40100E8: call_init (dl-init.c:30)
+    n1: 72704 0x40100E8: _dl_init (dl-init.c:119)
+     n1: 72704 0x40010C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+      n1: 72704 0x4: ???
+       n1: 72704 0x1FFF0008BA: ???
+        n1: 72704 0x1FFF0008C2: ???
+         n1: 72704 0x1FFF0008CB: ???
+          n1: 72704 0x1FFF0008D4: ???
+           n0: 72704 0x1FFF0008DD: ???
+ n1: 37966 0x4C9A15E: monstartup (gmon.c:153)
+  n1: 37966 0x10B340: __gmon_start__ (in /home/homeblue02/6/qxzm86/Documents/ShortestVectorProblem/runme)
+   n1: 37966 0x4836011: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_massif-amd64-linux.so)
+    n1: 37966 0x1FFF00060F: ???
+     n1: 37966 0x400FFA7: call_init.part.0 (dl-init.c:58)
+      n1: 37966 0x401015D: call_init (dl-init.c:30)
+       n1: 37966 0x401015D: _dl_init (dl-init.c:86)
+        n1: 37966 0x40010C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+         n1: 37966 0x4: ???
+          n1: 37966 0x1FFF0008BA: ???
+           n1: 37966 0x1FFF0008C2: ???
+            n1: 37966 0x1FFF0008CB: ???
+             n1: 37966 0x1FFF0008D4: ???
+              n0: 37966 0x1FFF0008DD: ???
+ n0: 231 in 10 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=29
+#-----------
+time=2407734
+mem_heap_B=110933
+mem_heap_extra_B=171
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=30
+#-----------
+time=2409824
+mem_heap_B=110949
+mem_heap_extra_B=179
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=31
+#-----------
+time=2411224
+mem_heap_B=110933
+mem_heap_extra_B=171
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=32
+#-----------
+time=2412561
+mem_heap_B=110933
+mem_heap_extra_B=171
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=2414826
+mem_heap_B=110949
+mem_heap_extra_B=179
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=34
+#-----------
+time=2416307
+mem_heap_B=110949
+mem_heap_extra_B=179
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=35
+#-----------
+time=2418448
+mem_heap_B=110949
+mem_heap_extra_B=179
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=36
+#-----------
+time=2420228
+mem_heap_B=110965
+mem_heap_extra_B=187
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=37
+#-----------
+time=2421620
+mem_heap_B=110949
+mem_heap_extra_B=179
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=38
+#-----------
+time=2423702
+mem_heap_B=110949
+mem_heap_extra_B=179
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=39
+#-----------
+time=2425748
+mem_heap_B=110965
+mem_heap_extra_B=187
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=40
+#-----------
+time=2427140
+mem_heap_B=110949
+mem_heap_extra_B=179
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=41
+#-----------
+time=2428701
+mem_heap_B=110949
+mem_heap_extra_B=179
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=42
+#-----------
+time=2429646
+mem_heap_B=110965
+mem_heap_extra_B=187
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=2431038
+mem_heap_B=110949
+mem_heap_extra_B=179
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=44
+#-----------
+time=2432919
+mem_heap_B=110949
+mem_heap_extra_B=179
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=45
+#-----------
+time=2434143
+mem_heap_B=110949
+mem_heap_extra_B=179
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=46
+#-----------
+time=2435624
+mem_heap_B=110949
+mem_heap_extra_B=179
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=47
+#-----------
+time=2436933
+mem_heap_B=110949
+mem_heap_extra_B=179
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=2438938
+mem_heap_B=111021
+mem_heap_extra_B=219
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=49
+#-----------
+time=2440507
+mem_heap_B=111037
+mem_heap_extra_B=227
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=50
+#-----------
+time=2441174
+mem_heap_B=111021
+mem_heap_extra_B=219
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=51
+#-----------
+time=2441418
+mem_heap_B=111037
+mem_heap_extra_B=227
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=52
+#-----------
+time=2442077
+mem_heap_B=111021
+mem_heap_extra_B=219
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=53
+#-----------
+time=2443518
+mem_heap_B=110997
+mem_heap_extra_B=203
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=54
+#-----------
+time=2443702
+mem_heap_B=110965
+mem_heap_extra_B=187
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=55
+#-----------
+time=2443901
+mem_heap_B=110933
+mem_heap_extra_B=171
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=56
+#-----------
+time=2462612
+mem_heap_B=111957
+mem_heap_extra_B=179
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=57
+#-----------
+time=2470001
+mem_heap_B=111957
+mem_heap_extra_B=179
+mem_stacks_B=0
+heap_tree=peak
+n3: 111957 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 72704 0x4913545: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.28)
+  n1: 72704 0x400FFE1: call_init.part.0 (dl-init.c:72)
+   n1: 72704 0x40100E8: call_init (dl-init.c:30)
+    n1: 72704 0x40100E8: _dl_init (dl-init.c:119)
+     n1: 72704 0x40010C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+      n1: 72704 0x4: ???
+       n1: 72704 0x1FFF0008BA: ???
+        n1: 72704 0x1FFF0008C2: ???
+         n1: 72704 0x1FFF0008CB: ???
+          n1: 72704 0x1FFF0008D4: ???
+           n0: 72704 0x1FFF0008DD: ???
+ n1: 37966 0x4C9A15E: monstartup (gmon.c:153)
+  n1: 37966 0x10B340: __gmon_start__ (in /home/homeblue02/6/qxzm86/Documents/ShortestVectorProblem/runme)
+   n1: 37966 0x4836011: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_massif-amd64-linux.so)
+    n1: 37966 0x1FFF00060F: ???
+     n1: 37966 0x400FFA7: call_init.part.0 (dl-init.c:58)
+      n1: 37966 0x401015D: call_init (dl-init.c:30)
+       n1: 37966 0x401015D: _dl_init (dl-init.c:86)
+        n1: 37966 0x40010C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+         n1: 37966 0x4: ???
+          n1: 37966 0x1FFF0008BA: ???
+           n1: 37966 0x1FFF0008C2: ???
+            n1: 37966 0x1FFF0008CB: ???
+             n1: 37966 0x1FFF0008D4: ???
+              n0: 37966 0x1FFF0008DD: ???
+ n0: 1287 in 12 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=58
+#-----------
+time=2470200
+mem_heap_B=111877
+mem_heap_extra_B=107
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=59
+#-----------
+time=2470402
+mem_heap_B=111845
+mem_heap_extra_B=91
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=60
+#-----------
+time=2470599
+mem_heap_B=111797
+mem_heap_extra_B=67
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=61
+#-----------
+time=2471478
+mem_heap_B=111741
+mem_heap_extra_B=43
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=62
+#-----------
+time=2472433
+mem_heap_B=111694
+mem_heap_extra_B=26
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=63
+#-----------
+time=2476815
+mem_heap_B=38990
+mem_heap_extra_B=18
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=64
+#-----------
+time=2478474
+mem_heap_B=37966
+mem_heap_extra_B=10
+mem_stacks_B=0
+heap_tree=empty
