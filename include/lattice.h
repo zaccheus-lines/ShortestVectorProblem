@@ -20,7 +20,7 @@ public:
     Lattice& operator=(Lattice&& other) noexcept; // Move assignment
 
     // Public member functions
-    bool isBasis(Vector** potentialBasis);
+    bool isBasis();
     void gramSchmidt(int startFrom = 0);
     void LLL();
     Vector schnorrEuchnerEnumeration();

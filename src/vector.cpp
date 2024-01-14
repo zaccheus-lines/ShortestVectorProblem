@@ -4,23 +4,60 @@
 #include <iomanip>
 #include <iostream>
 
+        // Constructor for a given size
     Vector::Vector(int n) : size(n) {
-    data = new double[size];
-    for (int i=0; i<size; i++){
-        data[i] = 0;
-    };
+        data = new double[size];
+        std::fill_n(data, size, 0.0);
     }
 
     // Constructor taking a std::vector
     Vector::Vector(const std::vector<double>& vec) : size(vec.size()) {
-    data = new double[size];
-    std::copy(vec.begin(), vec.end(), data);
+        data = new double[size];
+        std::copy(vec.begin(), vec.end(), data);
+    }
+
+    // Copy Constructor
+    Vector::Vector(const Vector& other) : size(other.size) {
+        data = new double[size];
+        std::copy(other.data, other.data + size, data);
+    }
+
+    // Move Constructor
+    Vector::Vector(Vector&& other) noexcept : data(other.data), size(other.size) {
+        other.data = nullptr;
+        other.size = 0;
     }
 
     // Destructor
     Vector::~Vector() {
         delete[] data;
     }
+
+    // Copy Assignment Operator
+    Vector& Vector::operator=(const Vector& other) {
+        if (this != &other) {
+            delete[] data;
+            size = other.size;
+            data = new double[size];
+            std::copy(other.data, other.data + size, data);
+        }
+        return *this;
+    }
+
+    // Move Assignment Operator
+    Vector& Vector::operator=(Vector&& other) noexcept {
+        if (this != &other) {
+            delete[] data;
+            data = other.data;
+            size = other.size;
+            other.data = nullptr;
+            other.size = 0;
+        }
+        return *this;
+    }
+
+    // Rest of your member functions...
+
 
 // Method to print the array
     void Vector::print() const {
@@ -82,6 +119,11 @@ Vector& Vector::operator+=(const Vector& other) {
     }
     return *this;
 }
+void Vector::zero() {
+        for (int i = 0; i < size; ++i) {
+            data[i] = 0.0;
+        }
+    }
 
 // Operator -= for element-wise subtraction
 Vector& Vector::operator-=(const Vector& other) {

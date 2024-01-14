@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
         }
     
     int size = static_cast<int>(sqrt_val);
-     std::cout << "size " << size << std::endl;
+    //std::cout << "size " << size << std::endl;
     
     
 Vector** basis = new Vector*[size];
@@ -79,7 +79,7 @@ for (int i = 1; i < argc; ++i) {
     // Create an instance of the Lattice class
     Lattice Lattice(basis,size);
 
-    if (!Lattice.isBasis(basis)) {
+    if (!Lattice.isBasis()) {
         std::cerr << "Error: The provided vectors do not form a valid basis." << std::endl;
         return 1;}
     Vector SV = Vector(size);
@@ -94,14 +94,16 @@ for (int i = 1; i < argc; ++i) {
     
 
    SVL = SV.norm();
+   //delete[] SV.data;
    std::cout << std::fixed << std::setprecision(16) << SVL << std::endl;
    //std::cout << SVL << std::endl;
 
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> duration = end - start;
-    std::cout << "Time taken: " << duration.count() << " ms" << std::endl;
+    //std::cout << "Time taken: " << duration.count() << " ms" << std::endl;
     for (int i = 0; i < size; i++) {
-        delete basis[i]; // Free memory for each Vector object
+        delete basis[i];
+      // Free memory for each Vector object
     }
     delete[] basis; // Free memory for the array
     return 0;

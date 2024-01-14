@@ -37,8 +37,7 @@ Lattice::Lattice(Lattice&& other) noexcept
 }
 
 // isBasis implementation
-bool Lattice::isBasis(Vector** potentialBasis) {
-    basis_ = potentialBasis;
+bool Lattice::isBasis() {
     for (int i = 0; i < n; ++i)  {
         if (basis_[i]->size != n) {
             return false;
@@ -61,10 +60,11 @@ void Lattice::gramSchmidt(int startFrom) {
 
         norms[0] = orthogonalizedVectors[0].dot(orthogonalizedVectors[0]);
     }
-
+    Vector x(n);
     for (int i = startFrom; i < n; ++i) {
-        Vector x(n);
+        x.zero();
         for (int j = 0; j < i; ++j) {
+            
             double normSquared = orthogonalizedVectors[j].dot(orthogonalizedVectors[j]);
             if (normSquared < epsilon) continue;
 
@@ -73,6 +73,7 @@ void Lattice::gramSchmidt(int startFrom) {
         }
         orthogonalizedVectors[i] = *basis_[i] - x;
         norms[i] = orthogonalizedVectors[i].dot(orthogonalizedVectors[i]);
+        
     }
 }
 
@@ -101,7 +102,7 @@ void Lattice::LLL() {
 // schnorrEuchnerEnumeration implementation
 Vector Lattice::schnorrEuchnerEnumeration() {
         gramSchmidt();
-        double R = norms.max();
+        double R = norms.max()+1;
         //norms.print();
         std::vector<double> rho(n + 1, 0.0);
         Vector v(n), c(n), w(n), s(n);
@@ -118,7 +119,7 @@ Vector Lattice::schnorrEuchnerEnumeration() {
             if (rho[k] < R2) {
                 if (k == 0) {
                     R2 = rho[k];
-                    s = Vector(n);
+                    s.zero();
                     for (int i = 0; i < n; i++){
                         s += *basis_[i]*v[i];
                         }
@@ -133,7 +134,11 @@ Vector Lattice::schnorrEuchnerEnumeration() {
                 }
             } else {
                 k += 1;
-                if (k == n) return s;
+                if (k == n) {
+                    return s;
+                }
+            
+                
                 if (k >= last_nonzero) {
                     last_nonzero = k;
                     v[k] += 1;

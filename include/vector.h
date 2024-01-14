@@ -8,16 +8,21 @@ class Vector {
 
 private:
 
-    double* data;  // Pointer to the array
+    
     
 
 public:
+    double* data;  // Pointer to the array
     int size;    // Size of the array
 
     // Constructors
     Vector(int size);
     Vector(const std::vector<double>& vec);
 
+    Vector(const Vector& other);
+    Vector(Vector&& other) noexcept;
+    Vector& operator=(const Vector& other);
+    Vector& operator=(Vector&& other) noexcept;
     // Destructor
     ~Vector();
 
@@ -33,6 +38,7 @@ public:
     Vector operator+(const Vector& other) const;
     Vector operator-(const Vector& other) const;
     Vector& operator+=(const Vector& other);
+    void zero();
     Vector& operator-=(const Vector& other);
     void normalise();
     Vector operator*(double scalar) const;
