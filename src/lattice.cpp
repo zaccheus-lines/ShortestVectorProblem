@@ -6,12 +6,22 @@
 // Constructor
 Lattice::Lattice(Vector** basis, int size)
     : basis_(basis), n(size), norms(n), orthogonalizedVectors(size, Vector(n)) {
-    mu_.resize(n, std::vector<double>(n, 0.0));
+    //mu_.resize(n, std::vector<double>(n, 0.0));
+    mu_ = new double*[n];
+    for (int i = 0; i < n; ++i) {
+        mu_[i] = new double[n];
+        std::fill(mu_[i], mu_[i] + n, 0.0);
+    }
 }
+
 
 // Destructor
 Lattice::~Lattice() {
-    // Clean up resources if necessary
+    // Deallocate the memory for mu
+    for (int i = 0; i < n; ++i) {
+        delete[] mu_[i];
+    }
+    delete[] mu_;
 }
 
 // Copy constructor

@@ -42,7 +42,8 @@ private:
     // Private member variables
     Vector** basis_;
     int n;
-    std::vector<std::vector<double>> mu_; // µ coefficients
+    //std::vector<std::vector<double>> mu_; // µ coefficients
+    double** mu_;
     Vector norms; // Norms of the orthogonalized vectors
     const double epsilon = 1e-10; // Define epsilon here
     std::vector<Vector> orthogonalizedVectors;
