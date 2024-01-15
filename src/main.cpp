@@ -9,24 +9,6 @@
 #include "../include/lattice.h"
 
 
-/*
-std::vector<double> parseNumbers(const std::string& str) {
-    std::vector<double> numbers;
-    std::stringstream ss(str);
-    char ch;  // used to consume the '[' and ']' characters
-    double num;
-    while (ss >> ch && ch == '[') {
-        while (ss >> num) {
-            numbers.push_back(num);
-            if (ss.peek() == ']') {
-                ss.ignore();
-                break;
-            }
-        }
-    }
-    return numbers;
-
-} */
 bool isNumber(const std::string& str) {
     std::istringstream iss(str);
     double num;
@@ -42,7 +24,30 @@ int main(int argc, char* argv[]) {
         std::cerr << "Error: Invalid argument" << std::endl;
         return 1;
     }
+    
+    std::string arg = argv[1];
+    if (argc ==2){
+        if (arg[0]=='[' && arg.back() == ']'){
+            arg.erase(0,1);
+            arg.pop_back();
+            if(isNumber(arg)){
+                
+                std::cout << std::fixed << std::setprecision(16) << std::abs(std::stod(arg)) << std::endl;
+                return 0;
+            }
+            else{
+                std::cerr << "Error: Invalid argument" << std::endl;
+                return 1;
+            }
 
+        }
+        else{
+            std::cerr << "Error: Invalid argument" << std::endl;
+            return 1;
+        }
+    }
+    
+    
     double sqrt_val = std::sqrt(argc - 1);
     if (std::round(sqrt_val) != sqrt_val)
     {
@@ -54,38 +59,35 @@ int main(int argc, char* argv[]) {
 
     // Initialize k here
     int k = 0;
-    //std::string currentVector;
     
     
-    double* nums = new double[size]; 
+    double* nums = new double[size];
     for (int i = 0; i+1 < argc; ++i) {
-        std::string arg = argv[i+1];
-        //std::cerr << arg.length() << std::endl;
+        arg = argv[i+1];
         int result = i % size;
         
 
         if (result == 0) {
-            if (arg[0] == '[') {
+            if (arg[0] == '[') 
+            {
                 arg.erase(0,1);
                 if(isNumber(arg)){
-                std::cerr << arg << std::endl;
-                nums[0] = std::stod(arg);
+                    nums[0] = std::stod(arg);
                 }
                 else {
+                    std::cerr << "Error: Invalid argument" << std::endl;
+                    return 1;
+                }
+            }
+            else {
                 std::cerr << "Error: Invalid argument" << std::endl;
-                std::cerr << 1.1 << std::endl;
-                return 1;}
-                
-            } else {
-                std::cerr << "Error: Invalid argument" << std::endl;
-                std::cerr << 1.2 << std::endl;
                 return 1;
             }
-        } else if (result == size - 1) {
+        } 
+        else if (result == size - 1) {
             if (arg.back() == ']'){
                 arg.pop_back();
                 if (isNumber(arg)){
-                    std::cerr << arg << std::endl;
                     nums[size - 1] = std::stod(arg);
                     double* numsCopy = new double[size];
                     std::copy(nums, nums + size, numsCopy);
@@ -96,7 +98,6 @@ int main(int argc, char* argv[]) {
                 }
                 else{
                     std::cerr << "Error: Invalid argument" << std::endl;
-                    std::cerr << 2.1 << std::endl;
                     return 1;
                 }
                 
@@ -111,15 +112,12 @@ int main(int argc, char* argv[]) {
                 nums[result] = std::stod(arg);
             } else {
                 std::cerr << "Error: Invalid argument" << std::endl;
-                std::cerr << 3 << std::endl;
                 return 1;
             }
         }
         
         }
     delete[] nums;
-    for (int i = 0; i < size; i++) {
-        basis[i]->print();}
 
         // Create an instance of the Lattice class
         Lattice Lattice(basis,size);

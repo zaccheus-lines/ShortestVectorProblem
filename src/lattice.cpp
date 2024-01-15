@@ -92,6 +92,18 @@ void Lattice::gramSchmidt(int startFrom) {
     }
 }
 
+double Lattice::gaussianHeuristic() {
+    double sum = 1.0;
+    for (int i = 0; i < n; ++i) {
+        sum *= basis_[i]->dot(*basis_[i]);
+    }
+    double recip = 1.0 / static_cast<double>(n);
+    sum = std::pow(sum, recip);
+    double con = 1.0 + n * 0.25;
+    sum *= con;
+    return sum;
+}
+
 // LLL implementation
 void Lattice::LLL() {
     double delta = 0.75;
@@ -117,13 +129,12 @@ void Lattice::LLL() {
 // schnorrEuchnerEnumeration implementation
 Vector Lattice::schnorrEuchnerEnumeration() {
         gramSchmidt();
-        
-        double R = norms.max()+1;
+        double R = gaussianHeuristic();
+        double R2 = R * R;
         //norms.print();
         Vector v(n), c(n), w(n), s(n), rho(n + 1);
         v[0]=1;
         int k = 0, last_nonzero = 0;
-        double R2 = R * R;
 
         while (true) {
             rho[k] = rho[k + 1] + (v[k] - c[k]) * (v[k] - c[k]) * norms[k];

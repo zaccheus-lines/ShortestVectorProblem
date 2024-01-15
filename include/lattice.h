@@ -24,6 +24,7 @@ public:
     bool isBasis();
     void gramSchmidt(int startFrom = 0);
     void LLL();
+    double gaussianHeuristic();
     Vector schnorrEuchnerEnumeration();
 
     // Iterators
