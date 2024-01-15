@@ -26,6 +26,6 @@ test: tests/test.sh
 
 # Clean up
 clean:
-		rm -rf src/*.o tests/*.o runme test gmon.out analysis.txt
+		rm -rf src/*.o tests/*.o runme test gmon.out analysis.txt result.txt
 
 .PHONY: all clean test

@@ -17,7 +17,6 @@ Lattice::Lattice(Vector** basis, int size)
     }
 }
 
-
 // Destructor
 Lattice::~Lattice() {
     // Deallocate the memory for mu
@@ -53,12 +52,6 @@ Lattice::Lattice(Lattice&& other) noexcept
 
 // isBasis implementation
 bool Lattice::isBasis() {
-    for (int i = 0; i < n; ++i)  {
-        if (basis_[i]->size != n) {
-            return false;
-        }
-    }
-
     gramSchmidt();
     for (int i = 0; i < n; ++i) {
         if (norms[i] == 0.0) {
@@ -138,10 +131,6 @@ Vector Lattice::schnorrEuchnerEnumeration() {
 
         while (true) {
             rho[k] = rho[k + 1] + (v[k] - c[k]) * (v[k] - c[k]) * norms[k];
-
-            // Debugging output
-            // std::cout << "k: " << k << ", rho[k]: " << rho[k] << ", R2: " << R2 << std::endl;
-
             if (rho[k] < R2) {
                 if (k == 0) {
                     R2 = rho[k];
@@ -163,8 +152,6 @@ Vector Lattice::schnorrEuchnerEnumeration() {
                 if (k == n) {
                     return s;
                 }
-            
-                
                 if (k >= last_nonzero) {
                     last_nonzero = k;
                     v[k] += 1;

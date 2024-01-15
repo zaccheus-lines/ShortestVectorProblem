@@ -27,19 +27,6 @@ public:
     double gaussianHeuristic();
     Vector schnorrEuchnerEnumeration();
 
-    // Iterators
-    typedef std::vector<Vector>::iterator iterator;
-    typedef std::vector<Vector>::const_iterator const_iterator;
-    /*
-    iterator begin();
-    iterator end();
-    const_iterator begin() const;
-    const_iterator end() const;
-    */
-
-    // Other public members
-    
-
 private:
     // Private member variables
     Vector** basis_;

@@ -15,33 +15,37 @@ public:
     // Constructors
     Vector();
     Vector(int size);
-    Vector(const std::vector<double>& vec);
     Vector(double* arr, int arrSize);
+
     Vector(const Vector& other);
     Vector(Vector&& other) noexcept;
+
     Vector& operator=(const Vector& other);
     Vector& operator=(Vector&& other) noexcept;
+
     // Destructor
     ~Vector();
-
-    
-
-    
 
     // Methods
     void print() const;
     double& operator[](int index);
     const double& operator[](int index) const;
-    double norm() const;
-    Vector operator+(const Vector& other) const;
-    Vector operator-(const Vector& other) const;
-    Vector& operator+=(const Vector& other);
-    void zero();
-    Vector& operator-=(const Vector& other);
+
     void normalise();
-    Vector operator*(double scalar) const;
+    void zero();
+
+    double norm() const;
     double dot(const Vector& other) const;
     double max() const;
+
+    Vector operator+(const Vector& other) const;
+    Vector operator-(const Vector& other) const;
+    Vector operator*(double scalar) const;
+
+    Vector& operator+=(const Vector& other);
+    Vector& operator-=(const Vector& other);
+    
+    
 
 
 };
