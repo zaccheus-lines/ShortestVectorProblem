@@ -1,8 +1,8 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
-#include <vector>
-#include <initializer_list>
+#include <iomanip>
+#include <cmath>
 
 class Vector {
     public:
@@ -35,11 +35,7 @@ class Vector {
         double dot(const Vector& other) const;
         double max() const;
 
-        Vector operator+(const Vector& other) const;
-        Vector operator-(const Vector& other) const;
-        Vector operator*(double scalar) const;
-
-        Vector& operator+=(const Vector& other);
-        Vector& operator-=(const Vector& other);
+        void addScaledVector(const Vector& other, double scalar);
+       
 };
 #endif  // VECTOR_H

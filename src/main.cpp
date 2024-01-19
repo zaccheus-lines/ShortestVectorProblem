@@ -1,11 +1,6 @@
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <cmath>
 #include <chrono>
-#include <iomanip>
-#include <cstdlib>
 #include <fstream>
+#include <iostream>
 #include "../include/lattice.h"
 
 bool isNumber(const std::string& str) {
@@ -28,6 +23,7 @@ int main(int argc, char* argv[]) {
         if (arg.front() == '[' && arg.back() == ']') {
             arg = arg.substr(1, arg.size() - 2);
             if (isNumber(arg)) {
+                std::cout << std::fixed << std::setprecision(16) << std::abs(std::stod(arg)) << std::endl;
                 std::ofstream outfile("result.txt");
                 outfile << std::abs(std::stod(arg)) << std::endl;
                 outfile.close();
@@ -90,15 +86,15 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     Lattice.LLL();
-    // Lattice.gramSchmidt();
     Vector SV = Lattice.schnorrEuchnerEnumeration();
     double SVL = SV.norm();
     std::cout << std::fixed << std::setprecision(16) << SVL << std::endl;
-    //std::ofstream outfile("result.txt");
-    //outfile << std::fixed << std::setprecision(16) << SVL << std::endl;
-    //outfile.close();
+    std::ofstream outfile("result.txt");
+    outfile << std::fixed << std::setprecision(16) << SVL << std::endl;
+    outfile.close();
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> duration = end - start;
+    //std::cout << "Duration: " << duration.count() << " milliseconds" << std::endl;
     for (int i = 0; i < size; i++) {
         delete basis[i];
     }

@@ -1,7 +1,4 @@
 #include "../include/lattice.h"
-#include <cmath>
-#include <algorithm>
-#include <iostream>
 
 // Constructor
 Lattice::Lattice(Vector** basis, int size)
@@ -50,12 +47,33 @@ Lattice::Lattice(Lattice&& other) noexcept
 bool Lattice::isBasis() {
     gramSchmidt();
     for (int i = 0; i < n; ++i) {
-        if (norms[i] == 0.0) {
+        if (norms[i] < epsilon) {
             return false;
         }
     }
     return true;
 }
+/*
+// gramSchmidt implementation
+void Lattice::gramSchmidt(int startFrom) {
+    if (startFrom == 0) {
+        orthogonalizedVectors[0] = *basis_[0];
+        norms[0] = orthogonalizedVectors[0].dot(orthogonalizedVectors[0]);
+    }
+    Vector x(n);
+    for (int i = startFrom; i < n; ++i) {
+        x.zero();
+        for (int j = 0; j < i; ++j) {
+            if (norms[j] < epsilon) continue;
+            mu_[i][j] = basis_[i]->dot(orthogonalizedVectors[j]) * (1/norms[j]);
+
+            x += orthogonalizedVectors[j] * mu_[i][j];
+        }
+        orthogonalizedVectors[i] = *basis_[i] - x;
+        norms[i] = orthogonalizedVectors[i].dot(orthogonalizedVectors[i]);
+    }
+}
+*/
 
 // gramSchmidt implementation
 void Lattice::gramSchmidt(int startFrom) {
@@ -67,12 +85,17 @@ void Lattice::gramSchmidt(int startFrom) {
     for (int i = startFrom; i < n; ++i) {
         x.zero();
         for (int j = 0; j < i; ++j) {
-            double normSquared = orthogonalizedVectors[j].dot(orthogonalizedVectors[j]);
-            if (normSquared < epsilon) continue;
-            mu_[i][j] = basis_[i]->dot(orthogonalizedVectors[j]) * (1/normSquared);
-            x += orthogonalizedVectors[j] * mu_[i][j];
+            if (norms[j] < epsilon) continue;
+            mu_[i][j] = basis_[i]->dot(orthogonalizedVectors[j]) * (1/norms[j]);
+            x.addScaledVector(orthogonalizedVectors[j], mu_[i][j]);
+            /*for (int k = 0; k < n; ++k) {
+                x[k] += orthogonalizedVectors[j][k] * mu_[i][j];
+            }*/
         }
-        orthogonalizedVectors[i] = *basis_[i] - x;
+        for (int k = 0; k < n; ++k) {
+            orthogonalizedVectors[i][k] = (*basis_[i])[k] - x[k];
+        }
+
         norms[i] = orthogonalizedVectors[i].dot(orthogonalizedVectors[i]);
     }
 }
@@ -97,7 +120,8 @@ void Lattice::LLL() {
     while (k < n) {
         for (int j = k - 1; j >= 0; --j) {
             if (std::abs(mu_[k][j]) > 0.5) {
-                *basis_[k] -= *basis_[j] * std::round(mu_[k][j]);
+                //*basis_[k] -= *basis_[j] * std::round(mu_[k][j]);
+                basis_[k]->addScaledVector(*basis_[j], -std::round(mu_[k][j]));
                 gramSchmidt(k);
             }
         }
@@ -113,7 +137,7 @@ void Lattice::LLL() {
 
 // schnorrEuchnerEnumeration implementation
 Vector Lattice::schnorrEuchnerEnumeration() {
-        gramSchmidt();
+        //gramSchmidt();
         double R = gaussianHeuristic();
         double R2 = R * R;
         Vector v(n), c(n), w(n), s(n), rho(n + 1);
@@ -127,7 +151,8 @@ Vector Lattice::schnorrEuchnerEnumeration() {
                     R2 = rho[k];
                     s.zero();
                     for (int i = 0; i < n; i++) {
-                        s += *basis_[i] * v[i];
+                        //s += *basis_[i] * v[i];
+                        s.addScaledVector(*basis_[i], v[i]);
                         }
                 } else {
                     k -= 1;

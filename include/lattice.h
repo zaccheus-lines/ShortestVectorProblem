@@ -2,8 +2,7 @@
 #ifndef LATTICE_H
 #define LATTICE_H
 
-#include <vector>
-#include "../include/vector.h" 
+#include "../include/vector.h"
 
 class Lattice {
     public:
