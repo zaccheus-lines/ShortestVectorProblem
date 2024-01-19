@@ -3,38 +3,38 @@
 #define LATTICE_H
 
 #include <vector>
-#include "../include/vector.h" // Make sure to include the Vector header
+#include "../include/vector.h" 
 
 class Lattice {
-public:
-    
-    // Constructors
-    explicit Lattice(Vector** basis, int size);
-    Lattice(const Lattice& other); // Copy constructor
-    Lattice(Lattice&& other) noexcept; // Move constructor
+    public:
+        // Constructors
+        explicit Lattice(Vector** basis, int size);
+        Lattice(const Lattice& other);  // Copy constructor.
+        Lattice(Lattice&& other) noexcept;  // Move constructor.
 
-    // Destructor
-    ~Lattice();
+        // Destructor
+        ~Lattice();
 
-    // Assignment operators
-    Lattice& operator=(const Lattice& other); // Copy assignment
-    Lattice& operator=(Lattice&& other) noexcept; // Move assignment
+        // Assignment operators
+        Lattice& operator=(const Lattice& other);  // Copy assignment.
+        Lattice& operator=(Lattice&& other) noexcept;  // Move assignment.
 
-    // Public member functions
-    bool isBasis();
-    void gramSchmidt(int startFrom = 0);
-    void LLL();
-    double gaussianHeuristic();
-    Vector schnorrEuchnerEnumeration();
+        // Public member functions
+        bool isBasis();
+        void gramSchmidt(int startFrom = 0);
+        void LLL();
+        double gaussianHeuristic();
+        Vector schnorrEuchnerEnumeration();
 
-private:
-    // Private member variables
-    Vector** basis_;
-    int n;
-    double** mu_; // µ coefficients
-    Vector norms; // Norms of the orthogonalized vectors
-    const double epsilon = 1e-10; // Define epsilon here
-    Vector* orthogonalizedVectors;
+
+    private:
+        // Private member variables
+        Vector** basis_;
+        int n;
+        double** mu_;  // µ coefficients
+        Vector* orthogonalizedVectors;
+        Vector norms;  // Squared norms of the orthogonalized vectors.
+        const double epsilon = 1e-10;
 };
 
-#endif // LATTICE_H
+#endif  // LATTICE_H

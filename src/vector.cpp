@@ -165,7 +165,7 @@
         }
         return *this;
     }
-    
+
     // Operator -= for element-wise subtraction
     Vector& Vector::operator-=(const Vector& other) {
         for (int i = 0; i < size; ++i) {
@@ -173,4 +173,3 @@
         }
         return *this;
     }
-

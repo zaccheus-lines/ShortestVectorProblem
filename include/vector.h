@@ -5,49 +5,41 @@
 #include <initializer_list>
 
 class Vector {
+    public:
+        double* data;  // Pointer to the array
+        int size;  // Size of the array
 
-private:
+        // Constructors
+        Vector();
+        Vector(int size);
+        Vector(double* arr, int arrSize);
 
-public:
-    double* data;  // Pointer to the array
-    int size;    // Size of the array
+        Vector(const Vector& other);
+        Vector(Vector&& other) noexcept;
 
-    // Constructors
-    Vector();
-    Vector(int size);
-    Vector(double* arr, int arrSize);
+        Vector& operator=(const Vector& other);
+        Vector& operator=(Vector&& other) noexcept;
 
-    Vector(const Vector& other);
-    Vector(Vector&& other) noexcept;
+        // Destructor
+        ~Vector();
 
-    Vector& operator=(const Vector& other);
-    Vector& operator=(Vector&& other) noexcept;
+        // Methods
+        void print() const;
+        double& operator[](int index);
+        const double& operator[](int index) const;
 
-    // Destructor
-    ~Vector();
+        void normalise();
+        void zero();
 
-    // Methods
-    void print() const;
-    double& operator[](int index);
-    const double& operator[](int index) const;
+        double norm() const;
+        double dot(const Vector& other) const;
+        double max() const;
 
-    void normalise();
-    void zero();
+        Vector operator+(const Vector& other) const;
+        Vector operator-(const Vector& other) const;
+        Vector operator*(double scalar) const;
 
-    double norm() const;
-    double dot(const Vector& other) const;
-    double max() const;
-
-    Vector operator+(const Vector& other) const;
-    Vector operator-(const Vector& other) const;
-    Vector operator*(double scalar) const;
-
-    Vector& operator+=(const Vector& other);
-    Vector& operator-=(const Vector& other);
-    
-    
-
-
+        Vector& operator+=(const Vector& other);
+        Vector& operator-=(const Vector& other);
 };
-
-#endif // VECTOR_H
+#endif  // VECTOR_H

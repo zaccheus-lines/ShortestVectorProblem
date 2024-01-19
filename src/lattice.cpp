@@ -1,13 +1,11 @@
 #include "../include/lattice.h"
-#include <cmath>     // For std::sqrt, std::round, std::abs
-#include <algorithm> // For std::max, std::swap
+#include <cmath>
+#include <algorithm>
 #include <iostream>
 
 // Constructor
-// Constructor
 Lattice::Lattice(Vector** basis, int size)
     : basis_(basis), n(size), norms(n) {
-    //mu_.resize(n, std::vector<double>(n, 0.0));
     mu_ = new double*[n];
     orthogonalizedVectors = new Vector[n];
     for (int i = 0; i < n; ++i) {
@@ -25,13 +23,11 @@ Lattice::~Lattice() {
     }
     delete[] mu_;
     delete[] orthogonalizedVectors;
-    
 }
 
 // Copy constructor
 Lattice::Lattice(const Lattice& other)
     : basis_(other.basis_), mu_(other.mu_), norms(other.norms) {
-    // Deep copy of the basis if necessary
 }
 
 // Copy assignment operator
@@ -65,23 +61,19 @@ bool Lattice::isBasis() {
 void Lattice::gramSchmidt(int startFrom) {
     if (startFrom == 0) {
         orthogonalizedVectors[0] = *basis_[0];
-
         norms[0] = orthogonalizedVectors[0].dot(orthogonalizedVectors[0]);
     }
     Vector x(n);
     for (int i = startFrom; i < n; ++i) {
         x.zero();
         for (int j = 0; j < i; ++j) {
-            
             double normSquared = orthogonalizedVectors[j].dot(orthogonalizedVectors[j]);
             if (normSquared < epsilon) continue;
-
             mu_[i][j] = basis_[i]->dot(orthogonalizedVectors[j]) * (1/normSquared);
             x += orthogonalizedVectors[j] * mu_[i][j];
         }
         orthogonalizedVectors[i] = *basis_[i] - x;
         norms[i] = orthogonalizedVectors[i].dot(orthogonalizedVectors[i]);
-        
     }
 }
 
@@ -124,9 +116,8 @@ Vector Lattice::schnorrEuchnerEnumeration() {
         gramSchmidt();
         double R = gaussianHeuristic();
         double R2 = R * R;
-        //norms.print();
         Vector v(n), c(n), w(n), s(n), rho(n + 1);
-        v[0]=1;
+        v[0] = 1;
         int k = 0, last_nonzero = 0;
 
         while (true) {
@@ -135,13 +126,13 @@ Vector Lattice::schnorrEuchnerEnumeration() {
                 if (k == 0) {
                     R2 = rho[k];
                     s.zero();
-                    for (int i = 0; i < n; i++){
-                        s += *basis_[i]*v[i];
+                    for (int i = 0; i < n; i++) {
+                        s += *basis_[i] * v[i];
                         }
                 } else {
                     k -= 1;
                     c[k] = 0;
-                    for (int i = k; i < n; ++i){
+                    for (int i = k; i < n; ++i) {
                         c[k] -= mu_[i][k] * v[i];
                         }
                     v[k] = std::round(c[k]);
@@ -156,12 +147,13 @@ Vector Lattice::schnorrEuchnerEnumeration() {
                     last_nonzero = k;
                     v[k] += 1;
                 } else {
-                    if (v[k] > c[k]) v[k] -= w[k];
-                    else v[k] += w[k];
+                    if (v[k] > c[k]) {
+                        v[k] -= w[k];
+                    } else {
+                        v[k] += w[k];
+                    }
                     w[k] += 1;
                 }
             }
-
         }
-        
     }
