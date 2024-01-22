@@ -30,13 +30,15 @@ debug: $(OBJECTS)
 %.o_debug: %.cpp
 		$(CXX) $(DEBUG_CXXFLAGS) -c $< -o $@
 
+# Rule to run Python tests
+python_test:
+		python3 tests/tests.py
+
 # Rule to create the test executable and run it
-test: tests/test.sh
-		chmod +x tests/test.sh
-		./tests/test.sh
+test: runme tests/test.sh python_test
 
 # Clean up
 clean:
 		rm -rf src/*.o src/*.o_debug runme runme_debug test gmon.out analysis.txt result.txt
 
-.PHONY: all clean test debug
+.PHONY: all clean test debug python_test

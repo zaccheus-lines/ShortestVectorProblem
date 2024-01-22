@@ -23,6 +23,10 @@ int main(int argc, char* argv[]) {
         if (arg.front() == '[' && arg.back() == ']') {
             arg = arg.substr(1, arg.size() - 2);
             if (isNumber(arg)) {
+                if (std::abs(std::stod(arg)) == 0){
+                    std::cerr << "Error: Provided vectors are not linearly independent." << std::endl;
+                    return 1;
+                }
                 std::cout << std::fixed << std::setprecision(16) << std::abs(std::stod(arg)) << std::endl;
                 std::ofstream outfile("result.txt");
                 outfile << std::abs(std::stod(arg)) << std::endl;

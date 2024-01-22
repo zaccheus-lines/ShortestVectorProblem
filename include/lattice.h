@@ -18,7 +18,7 @@ class Lattice {
         Lattice& operator=(const Lattice& other);  // Copy assignment.
         Lattice& operator=(Lattice&& other) noexcept;  // Move assignment.
 
-        // Public member functions
+        // Methods
         bool isBasis();
         void gramSchmidt(int startFrom = 0);
         void LLL();
