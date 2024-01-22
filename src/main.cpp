@@ -12,7 +12,7 @@ bool isNumber(const std::string& str) {
 }
 
 int main(int argc, char* argv[]) {
-    auto start = std::chrono::high_resolution_clock::now();
+    //auto start = std::chrono::high_resolution_clock::now();
     // No argument case
     if (argc <= 1) {
         std::cerr << "Error: Invalid argument." << std::endl;
@@ -97,8 +97,8 @@ int main(int argc, char* argv[]) {
     std::ofstream outfile("result.txt");
     outfile << std::fixed << std::setprecision(16) << SVL << std::endl;
     outfile.close();
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double, std::milli> duration = end - start;
+    //auto end = std::chrono::high_resolution_clock::now();
+    //std::chrono::duration<double, std::milli> duration = end - start;
     //std::cout << "Duration: " << duration.count() << " milliseconds" << std::endl;
     for (int i = 0; i < size; i++) {
         delete basis[i];
