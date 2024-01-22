@@ -1,6 +1,7 @@
 #include <chrono>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include "../include/lattice.h"
 
 bool isNumber(const std::string& str) {
