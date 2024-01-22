@@ -1,1 +1,6 @@
 .DS_Store
+failed
+.vscode
+gen
+latticegen.sh
+test.sh
