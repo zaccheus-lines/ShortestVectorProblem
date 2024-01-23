@@ -19,7 +19,7 @@ class Lattice {
         Lattice& operator=(Lattice&& other) noexcept;  // Move assignment.
 
         // Methods
-        bool isBasis();
+        bool isBasis(); 
         void gramSchmidt(int startFrom = 0);
         void LLL();
         double gaussianHeuristic();
@@ -27,13 +27,13 @@ class Lattice {
 
 
     private:
-        // Private member variables
+        // Private class variables
         Vector** basis_;
-        int n;
-        double** mu_;  // µ coefficients
-        Vector* orthogonalizedVectors;
+        int n;  //Dimension of array.
+        double** mu_;  // µ coefficients.
+        Vector* orthogonalizedVectors;  // Gram-Schmidt Orthogonalised Vectors
         Vector norms;  // Squared norms of the orthogonalized vectors.
-        const double epsilon = 1e-10;
+        const double epsilon = 1e-10;  // epsilon for floating point commparison.
 };
 
 #endif  // LATTICE_H

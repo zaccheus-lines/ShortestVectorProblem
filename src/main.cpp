@@ -4,6 +4,7 @@
 #include <sstream>
 #include "../include/lattice.h"
 
+// Function to verify whether input is number or not.
 bool isNumber(const std::string& str) {
     std::istringstream iss(str);
     double num;
@@ -12,7 +13,7 @@ bool isNumber(const std::string& str) {
 }
 
 int main(int argc, char* argv[]) {
-    auto start = std::chrono::high_resolution_clock::now();
+    // auto start = std::chrono::high_resolution_clock::now();
     // No argument case
     if (argc <= 1) {
         std::cerr << "Error: Invalid argument." << std::endl;
@@ -28,9 +29,10 @@ int main(int argc, char* argv[]) {
                     std::cerr << "Error: Provided vectors are not linearly independent." << std::endl;
                     return 1;
                 }
-                std::cout << std::fixed << std::setprecision(16) << std::abs(std::stod(arg)) << std::endl;
+                // auto end = std::chrono::high_resolution_clock::now();
+                // std::chrono::duration<double, std::milli> duration = end - start;
                 std::ofstream outfile("result.txt");
-                outfile << std::abs(std::stod(arg)) << std::endl;
+                outfile << std::setprecision(16) << std::abs(std::stod(arg)) << std::endl;
                 outfile.close();
                 return 0;
             }
@@ -38,7 +40,7 @@ int main(int argc, char* argv[]) {
         std::cerr << "Error: Invalid argument." << std::endl;
         return 1;
     }
-    // Genral case
+    // General case
     double sqrt_val = std::sqrt(argc - 1);
     if (std::round(sqrt_val) != sqrt_val) {
         std::cerr << "Error: Invalid argument." << std::endl;
@@ -68,7 +70,7 @@ int main(int argc, char* argv[]) {
                     nums[residue] = std::stod(arg);
                     double* numsCopy = new double[size];
                     std::copy(nums, nums + size, numsCopy);
-                    Vector* newVector = new Vector(numsCopy, size);
+                    Vector* newVector = new Vector(numsCopy, size);  //malloc for each vector in basis
                     basis[k++] = newVector;
                     continue;
                 }
@@ -84,25 +86,24 @@ int main(int argc, char* argv[]) {
             return 1;
         }
     }
-    delete[] nums;
+    delete[] nums;  //free nums memory
     Lattice Lattice(basis, size);
     if (!Lattice.isBasis()) {
         std::cerr << "Error: Provided vectors are not linearly independent." << std::endl;
         return 1;
     }
-    Lattice.LLL();
-    Vector SV = Lattice.schnorrEuchnerEnumeration();
+    Lattice.LLL(); // LLL reduce basis
+    Vector SV = Lattice.schnorrEuchnerEnumeration(); //Enumerate basis
     double SVL = SV.norm();
-    std::cout << std::fixed << std::setprecision(16) << SVL << std::endl;
+    //auto end = std::chrono::high_resolution_clock::now();
     std::ofstream outfile("result.txt");
     outfile << std::fixed << std::setprecision(16) << SVL << std::endl;
-    outfile.close();
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double, std::milli> duration = end - start;
-    std::cout << "Duration: " << duration.count() << " milliseconds" << std::endl;
+    outfile.close(); //output shortest vector length to result.txt
+    //std::chrono::duration<double, std::milli> duration = end - start;
+    //std::cout << "Duration: " << duration.count() << " milliseconds" << std::endl;
     for (int i = 0; i < size; i++) {
-        delete basis[i];
+        delete basis[i];  //free basis[i] memory
     }
-    delete[] basis;
+    delete[] basis;  //free basis memory
     return 0;
 }

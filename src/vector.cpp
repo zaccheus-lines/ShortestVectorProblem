@@ -1,6 +1,5 @@
 #include "../include/vector.h"
 
-
     // Default constructor
     Vector::Vector() {
         size = 0;
@@ -13,27 +12,28 @@
         std::fill_n(data, size, 0.0);
     }
 
+    // Constructor for a given array
     Vector::Vector(double* arr, int arrSize) : data(arr), size(arrSize) {
 }
 
-    // Copy Constructor
+    // Copy Constructor.
     Vector::Vector(const Vector& other) : size(other.size) {
         data = new double[size];
         std::copy(other.data, other.data + size, data);
     }
 
-    // Move Constructor
+    // Move Constructor.
     Vector::Vector(Vector&& other) noexcept : data(other.data), size(other.size) {
         other.data = nullptr;
         other.size = 0;
     }
 
-    // Destructor
+    // Destructor.
     Vector::~Vector() {
         delete[] data;
     }
 
-    // Copy Assignment Operator
+    // Copy Assignment Operator.
     Vector& Vector::operator=(const Vector& other) {
         if (this != &other) {
             delete[] data;
@@ -44,7 +44,7 @@
         return *this;
     }
 
-    // Move Assignment Operator
+    // Move Assignment Operator.
     Vector& Vector::operator=(Vector&& other) noexcept {
         if (this != &other) {
             delete[] data;
@@ -56,27 +56,17 @@
         return *this;
     }
 
-    /*
-    // Method to print the array
-    void Vector::print() const {
-        std::cout << std::fixed << std::setprecision(15);
-        for (int i = 0; i < size; ++i) {
-            std::cout << data[i] << " ";
-        }
-        std::cout << std::endl;
-    }
-    */
-    // Overload the [] operator for non-const access
+    // Overload the [] operator for non-const access.
     double& Vector::operator[](int index) {
         return data[index];
     }
 
-    // Overload the [] operator for const access
+    // Overload the [] operator for const access.
     const double& Vector::operator[](int index) const {
         return data[index];
     }
 
-    // Normalise the vector
+    // Normalise the vector.
     void Vector::normalise() {
         double magnitude = norm();
         if (magnitude != 0.0) {
@@ -85,7 +75,7 @@
             }
         }
     }
-
+    // Assign vector to the zero vector.
     void Vector::zero() {
         for (int i = 0; i < size; ++i) {
             data[i] = 0.0;
@@ -93,7 +83,7 @@
         }
 
 
-    // Euclidean norm (magnitude)
+    // Euclidean norm (magnitude).
     double Vector::norm() const {
         double sum = 0.0;
         for (int i =0; i <size; i++) {
@@ -101,7 +91,7 @@
         }
         return sqrt(sum);
 }
-    // Dot product
+    // Dot product.
     double Vector::dot(const Vector& other) const {
         double sum = 0.0;
         for (int i = 0; i < size; ++i) {
@@ -110,7 +100,7 @@
         return sum;
     }
 
-    // Find the maximum element
+    // Find the maximum element.
     double Vector::max() const {
         double maxElem = data[0];
         for (int i = 1; i < size; ++i) {
@@ -120,7 +110,7 @@
         }
         return maxElem;
     }
-    // Add a scaled vector to this vector
+    // Add a scaled vector to this vector.
     void Vector::addScaledVector(const Vector& other, double scalar) {
         for (int i = 0; i < size; ++i) {
             this->data[i] += other.data[i] * scalar;

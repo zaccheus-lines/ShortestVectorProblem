@@ -10,21 +10,20 @@ class Vector {
         int size;  // Size of the array
 
         // Constructors
-        Vector();
-        Vector(int size);
-        Vector(double* arr, int arrSize);
+        Vector();  // Default constructor
+        Vector(int size); // Zero vector size n constructor.
+        Vector(double* arr, int arrSize);  // Vector populated with array constructor. 
+        Vector(const Vector& other);  // Copy constructor.
+        Vector(Vector&& other) noexcept;  // Move constructor.
 
-        Vector(const Vector& other);
-        Vector(Vector&& other) noexcept;
-
-        Vector& operator=(const Vector& other);
-        Vector& operator=(Vector&& other) noexcept;
+        // Assignment operators
+        Vector& operator=(const Vector& other); // Copy assignment.
+        Vector& operator=(Vector&& other) noexcept; // Move assignment.
 
         // Destructor
         ~Vector();
 
         // Methods
-        void print() const;
         double& operator[](int index);
         const double& operator[](int index) const;
 

@@ -1,11 +1,11 @@
 import subprocess
-import time
 import random
 import math
 import os
 import random
 import csv
 from decimal import Decimal, ROUND_HALF_UP
+
 
 def run_program(args):
     # Get the directory in which the script is located
@@ -17,8 +17,17 @@ def run_program(args):
     # Execute the command
     process = subprocess.Popen(f"{runme_path} {args}", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = process.communicate()
+    process.wait()
 
-    return process.returncode, stdout.decode().strip(), stderr.decode().strip()
+    if process.returncode == 0:
+        result_file_path = os.path.join(script_dir, '..', 'result.txt')
+        # Read the results from result.txt
+        with open(result_file_path, 'r') as file:
+            results = file.read()
+    else:
+        results = ''
+    
+    return process.returncode, results, stderr.decode().strip()
 
 def round_sf(num, n_sig_fig):
     if num != 0:
@@ -29,8 +38,8 @@ def calculate_norm(vector):
     """ Calculate the Euclidean norm of a vector. """
     return math.sqrt(sum([x**2 for x in vector]))
 
-def generate_test_case(max_dimension=10):
-    n = random.randint(1, max_dimension)
+def generate_test_case(n,max_dimension=10):
+    #n = random.randint(1, max_dimension)
     lattice = []
     norms = []
 
@@ -186,7 +195,7 @@ def run_regression_tests(csv_file):
 
     with open(csv_file, mode='r') as file:
         reader = csv.reader(file)
-        next(reader)  # Skip the header row
+        next(reader)
 
         for row in reader:
             dimension, bit, type, test_case, expected_result = row
@@ -205,7 +214,7 @@ def main():
 
         i = 0
         while i < 10:
-            test_case, norms = generate_test_case()
+            test_case, norms = generate_test_case(i+1)
             return_code, result, error_message = run_program(test_case)
 
             if return_code != 0:
@@ -218,6 +227,7 @@ def main():
 
     except AssertionError as e:
         print("Test failed:", e)
+
 
 if __name__ == "__main__":
     main()

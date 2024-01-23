@@ -1,6 +1,6 @@
 # Compiler and compiler flags
 CXX = g++
-CXXFLAGS = -Wall -Werror -std=c++20 -Ofast
+CXXFLAGS = -Wall -Werror -std=c++20 -O3
 
 # Debug flags
 DEBUG_CXXFLAGS = -Wall -Werror -std=c++20 -O0 -g
@@ -18,24 +18,17 @@ all: runme
 runme: $(OBJECTS)
 		$(CXX) $(CXXFLAGS) -o runme $(OBJECTS)
 
-# Rule to create the debug version of runme
-debug: $(OBJECTS)
-		$(CXX) $(DEBUG_CXXFLAGS) -o runme_debug $(OBJECTS)
-
 # Rule to compile .cpp files into .o files
 %.o: %.cpp
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Rule to compile .cpp files into .o files for the debug version
-%.o_debug: %.cpp
-		$(CXX) $(DEBUG_CXXFLAGS) -c $< -o $@
 
 # Rule to run Python tests
 python_test:
 		python3 tests/tests.py
 
 # Rule to create the test executable and run it
-test: runme tests/test.sh python_test
+test: runme python_test
 
 # Clean up
 clean:
