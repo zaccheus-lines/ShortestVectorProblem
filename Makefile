@@ -32,6 +32,6 @@ test: runme python_test
 
 # Clean up
 clean:
-		rm -rf src/*.o src/*.o_debug runme runme_debug test gmon.out analysis.txt result.txt
+		rm -rf src/*.o runme test result.txt
 
 .PHONY: all clean test debug python_test
